@@ -1,0 +1,35 @@
+{
+  "realtime_start": "2026-09-02",
+  "realtime_end": "2026-09-02",
+  "order_by": "search_rank",
+  "sort_order": "asc",
+  "count": 2,
+  "offset": 0,
+  "limit": 2,
+  "seriess": [
+    {
+      "id": "UNRATE",
+      "title": "Unemployment Rate",
+      "observation_start": "1948-01-01",
+      "observation_end": "2026-07-01",
+      "frequency": "Monthly",
+      "units": "Percent",
+      "units_short": "%",
+      "seasonal_adjustment": "Seasonally Adjusted",
+      "last_updated": "2026-08-01 07:46:02-05",
+      "popularity": 94
+    },
+    {
+      "id": "UNRATENSA",
+      "title": "Unemployment Rate",
+      "observation_start": "1948-01-01",
+      "observation_end": "2026-07-01",
+      "frequency": "Monthly",
+      "units": "Percent",
+      "units_short": "%",
+      "seasonal_adjustment": "Not Seasonally Adjusted",
+      "last_updated": "2026-08-01 07:46:03-05",
+      "popularity": 71
+    }
+  ]
+}

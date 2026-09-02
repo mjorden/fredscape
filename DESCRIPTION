@@ -1,0 +1,39 @@
+Package: fredscape
+Title: Tidy Access to FRED Economic Data with Economist-Style Charts
+Version: 0.1.0
+Authors@R:
+    person("Matthew", "Jorden", email = "matthew.jorden@gmail.com",
+           role = c("aut", "cre"))
+Description: A small, dependency-light client for the Federal Reserve Bank of
+    St. Louis FRED API that returns tidy data frames, paired with a ggplot2
+    theme and colour scales built to match the house style of 'The Economist'.
+    Series observations, series metadata and full-text search are covered;
+    charts get a blue-grey panel, right-hand y-axis labels, the red masthead
+    block and NBER recession shading without any manual theming.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Language: en-GB
+URL: https://github.com/mjorden/fredscape
+BugReports: https://github.com/mjorden/fredscape/issues
+Depends:
+    R (>= 4.1)
+Imports:
+    cli,
+    ggplot2 (>= 3.4.0),
+    grDevices,
+    gtable,
+    grid,
+    httr2 (>= 1.0.0),
+    rlang,
+    stats,
+    utils
+Suggests:
+    jsonlite,
+    knitr,
+    scales,
+    testthat (>= 3.0.0),
+    withr
+Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+LazyData: true
