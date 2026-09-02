@@ -97,3 +97,18 @@ p_palette <- ggplot(swatches, aes(i, palette, fill = colour)) +
   )
 
 save_fig(econ_masthead(p_palette), "README-palette", height = 3)
+
+## 4. Consumer choice ----------------------------------------------------------
+
+u <- cobb_douglas(alpha = 0.4)
+b <- budget(income = 120, px = 3, py = 4)
+
+p_choice <- plot_consumer_choice(
+  u, b,
+  goods = c("Coffee, cups", "Bagels"),
+  title = "Breakfast, optimised",
+  subtitle = "Cobb-Douglas utility, alpha = 0.4; income 120 at prices 3 and 4",
+  source = "fredscape"
+)
+
+save_fig(econ_masthead(p_choice), "README-choice", width = 7, height = 5.2)

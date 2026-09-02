@@ -94,6 +94,40 @@ returns titles, units, frequency and coverage for the matches.
 
 <img src="man/figures/README-index.png" width="100%" alt="Three indexed US economic series in the Economist categorical palette" />
 
+## Theory, not just data
+
+The same style works for the textbook diagrams. `cobb_douglas()` builds a
+utility (or production) function that remembers its parameters, `budget()`
+describes a budget constraint (or isocost line), and the closed-form results
+follow: indifference curves, the optimal bundle, the marginal rate of
+substitution.
+
+```r
+u <- cobb_douglas(alpha = 0.4)          # U = x^0.4 * y^0.6
+b <- budget(income = 120, px = 3, py = 4)
+
+optimal_bundle(u, b)
+#>    x  y  utility
+#> 1 16 18 17.17163
+
+mrs(u, 16, 18)                          # = px / py at the optimum
+#> [1] 0.75
+
+indifference_curve(u, level = c(10, 15), x = c(5, 10, 20))
+```
+
+`plot_consumer_choice()` composes the whole chart; `geom_indifference()`,
+`geom_budget()` and `geom_optimum()` are the pieces if you'd rather build it
+up yourself.
+
+<img src="man/figures/README-choice.png" width="80%" alt="Three Cobb-Douglas indifference curves, a budget line, and the tangency point, in Economist style" />
+
+Anything that isn't Cobb-Douglas still works: pass any function of `x` and
+`y` and the contours are found by bisection, the optimum by a line search
+along the budget line. Perfect complements (`function(x, y) pmin(x, y)`) and
+perfect substitutes (`function(x, y) x + 2 * y`, which correctly lands on a
+corner) are both covered by the tests.
+
 ## The palette
 
 <img src="man/figures/README-palette.png" width="100%" alt="Swatches of the five fredscape palettes" />
@@ -127,6 +161,10 @@ scale_fill_econ_c("redblue") # continuous, diverging
 | `annotate_recessions()` | Recession bands behind the data |
 | `econ_masthead()` | The red block above the title |
 | `nber_recessions` | Every NBER-dated US contraction since 1857 |
+| `cobb_douglas()` / `budget()` | Utility or production function; budget or isocost constraint |
+| `indifference_curve()` / `optimal_bundle()` / `mrs()` | Contours, the chosen bundle, marginal rate of substitution — closed form for Cobb-Douglas, numeric for anything else |
+| `geom_indifference()` / `geom_budget()` / `geom_optimum()` | The pieces as ggplot layers |
+| `plot_consumer_choice()` | The textbook diagram in one call |
 
 ## Design notes
 
