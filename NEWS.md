@@ -1,3 +1,19 @@
+# fredscape 0.6.0
+
+Producer theory (#8), on the same machinery as the consumer side:
+
+* `expansion_path()` -- cost-minimising input bundles as outlay grows.
+* `conditional_demand()` -- the cheapest bundle for each output, and its cost.
+* `cost_curves()` -- total, average and marginal cost; marginal cost is
+  closed-form for Cobb-Douglas and a numerical derivative of `expenditure()`
+  otherwise. A `fixed` cost gives average cost its U shape.
+* `plot_cost_curves()` for the AC / MC pair, and `plot_producer_choice()`,
+  which draws isoquants and an isocost line for any production function.
+
+Also: `check_positive()`'s `zero_ok` argument, flagged as dead code in #4,
+now has a caller (`fixed = 0` is a valid cost). #4 is closed by this
+release.
+
 # fredscape 0.5.0
 
 The substitution / income decomposition of a price change (#7):
