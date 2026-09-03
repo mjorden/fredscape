@@ -163,3 +163,14 @@ p_cost <- plot_cost_curves(
   source = "fredscape"
 )
 save_fig(econ_masthead(p_cost), "README-cost", width = 7, height = 4.6)
+
+## 9. Monopoly ----------------------------------------------------------------------
+
+m <- monopoly(linear_demand(intercept = 100, slope = 1), quadratic_cost(a = 20))
+p_monopoly <- plot_market(
+  m,
+  title = "The price of market power",
+  subtitle = "Monopoly facing P = 100 - Q with constant marginal cost 20",
+  source = "fredscape"
+)
+save_fig(econ_masthead(p_monopoly), "README-monopoly", width = 7, height = 5)

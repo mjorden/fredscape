@@ -193,6 +193,28 @@ cost_curves(f, w = 20, r = 30, q = 1:40, fixed = 150)      # total, average, mar
 
 <img src="man/figures/README-cost.png" width="80%" alt="Average and marginal cost curves, marginal crossing average at its minimum" />
 
+Put a demand curve in front of those costs and you have a market:
+
+```r
+d   <- linear_demand(intercept = 100, slope = 1)   # P = 100 - Q
+cst <- quadratic_cost(a = 20)                       # constant marginal cost
+
+monopoly(d, cst)                    # MR = MC:  Q = 40, P = 60, deadweight loss 800
+cournot(d, cst, n = 3)              # symmetric Nash equilibrium
+perfect_competition(d, cst, n = 10) # P = MC, no deadweight loss
+perfect_competition(d, quadratic_cost(fixed = 100, a = 20, b = 1))  # free entry: P = min AC
+
+compare_structures(d, cst, n = c(2, 3, 5, 10))
+```
+
+Every structure returns the same `market_outcome` — price, quantities,
+profit, consumer and producer surplus, deadweight loss against the `P = MC`
+benchmark, the Lerner index — and `plot_market()` draws it with the welfare
+areas shaded. Costs can also come straight from a production function via
+`production_cost()`, and any decreasing `function(q)` works as demand.
+
+<img src="man/figures/README-monopoly.png" width="80%" alt="A monopoly outcome: demand, marginal revenue and marginal cost, with consumer surplus, producer surplus and the deadweight-loss triangle shaded" />
+
 ## The palette
 
 <img src="man/figures/README-palette.png" width="100%" alt="Swatches of the five fredscape palettes" />
@@ -234,6 +256,9 @@ scale_fill_econ_c("redblue") # continuous, diverging
 | `expenditure()` | The expenditure function: least income to reach a utility (or least outlay for an output) |
 | `expansion_path()` / `conditional_demand()` / `cost_curves()` | Producer theory: input demands and total / average / marginal cost |
 | `plot_producer_choice()` / `plot_cost_curves()` | Isoquants with an isocost line; the AC / MC pair |
+| `linear_demand()` / `demand_fn()` / `quadratic_cost()` / `production_cost()` | Market demand and firm cost objects, with `price_at()`, `marginal_revenue()`, `elasticity()`, `marginal_cost()` and friends |
+| `monopoly()` / `cournot()` / `perfect_competition()` / `compare_structures()` | Market equilibria with surplus, deadweight loss and the Lerner index |
+| `plot_market()` | Demand, MR, MC and the shaded welfare areas |
 | `geom_indifference()` / `geom_budget()` / `geom_optimum()` / `geom_demand()` / `geom_engel()` / `geom_consumption_path()` | The pieces as ggplot layers |
 | `plot_consumer_choice()` | The textbook diagram in one call |
 
