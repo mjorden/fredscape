@@ -112,3 +112,14 @@ p_choice <- plot_consumer_choice(
 )
 
 save_fig(econ_masthead(p_choice), "README-choice", width = 7, height = 5.2)
+
+## 5. Perfect complements ------------------------------------------------------
+
+p_leontief <- plot_consumer_choice(
+  leontief(a = 1, b = 2), budget(income = 120, px = 3, py = 4),
+  goods = c("Left shoes", "Right shoes"),
+  title = "No use for one without the other",
+  subtitle = "Leontief utility, u = min(x, y / 2); income 120 at prices 3 and 4",
+  source = "fredscape"
+)
+save_fig(econ_masthead(p_leontief), "README-leontief", width = 7, height = 5.2)

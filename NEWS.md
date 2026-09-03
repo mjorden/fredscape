@@ -1,3 +1,22 @@
+# fredscape 0.3.0
+
+Four more utility (and production) function constructors, each with the same
+closed-form `indifference_curve()`, `optimal_bundle()` and `mrs()` methods
+that `cobb_douglas()` has (#5):
+
+* `ces(rho, alpha, A)` -- constant elasticity of substitution. Nests
+  Cobb-Douglas (rho near 0), perfect substitutes (rho = 1) and Leontief
+  (rho to minus infinity); the nesting is tested.
+* `leontief(a, b, A)` -- perfect complements. L-shaped contours, the optimum
+  always at the kink; `mrs()` returns `Inf` below the ray, `0` above it and
+  `NA` on it; `geom_indifference()` draws the vertical arm.
+* `perfect_substitutes(a, b, A)` -- linear. Corner solutions, with the
+  knife-edge tie returning the midpoint of the budget line and an
+  `indeterminate` attribute.
+* `quasilinear(f, f_prime)` -- `f(x) + y`. Demand for `x` is independent of
+  income; corners are checked; `f_prime` is approximated numerically when not
+  supplied.
+
 # fredscape 0.2.0
 
 Consumer and producer theory, drawn in the house style.

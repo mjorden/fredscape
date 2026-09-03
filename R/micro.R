@@ -174,8 +174,10 @@ budget_line <- function(b, n = 2L) {
 #' Indifference curves and isoquants
 #'
 #' For each `level`, finds the `y` that gives \eqn{u(x, y) = } `level` at
-#' every `x`, i.e. the contour of the function. Cobb-Douglas functions use
-#' the closed form \eqn{y = (U / (A x^{\alpha}))^{1/\beta}}; any other
+#' every `x`, i.e. the contour of the function. Functions built by
+#' [cobb_douglas()], [ces()], [leontief()], [perfect_substitutes()] and
+#' [quasilinear()] use their closed forms (for Cobb-Douglas,
+#' \eqn{y = (U / (A x^{\alpha}))^{1/\beta}}); any other
 #' function of two arguments is solved numerically by bisection, which
 #' requires it to be non-decreasing in `y` ("more is better"). Where a
 #' contour is flat in `y` -- perfect complements, for instance -- the
