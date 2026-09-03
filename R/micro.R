@@ -191,8 +191,14 @@ budget_line <- function(b, n = 2L) {
 #'   the plane.
 #'
 #' @return A data frame with columns `x`, `y` and `level`, one row per `x`
-#'   per level, stacked in `level` order. `y` is `NA` where no solution exists
-#'   in `y_range`.
+#'   per level, stacked in `level` order. `y` is `NA` where no solution
+#'   exists: for the numeric method, where the level is unreachable within
+#'   `y_range`; for Cobb-Douglas, at `x <= 0` or `level <= 0`, where the
+#'   closed form is undefined. The two methods agree wherever a level is
+#'   unattainable and at `x = 0` for any positive level, so a caller can
+#'   filter on `is.na(y)` without knowing which one ran. (At `level = 0`
+#'   exactly, a Cobb-Douglas contour is the pair of axes; the closed form
+#'   reports `NA` rather than pretend that is a curve.)
 #'
 #' @examples
 #' u <- cobb_douglas(alpha = 0.5)
@@ -221,6 +227,11 @@ indifference_curve.cobb_douglas <- function(u, level, x, ...) {
   p <- cd_params(u)
   rows <- lapply(level, function(lv) {
     y <- (lv / (p$A * x^p$alpha))^(1 / p$beta)
+    # The closed form only means anything on the positive orthant: at x = 0 it
+    # divides by zero (Inf) and at level <= 0 it takes a fractional power of a
+    # non-positive base (0 or NaN). Both are "no solution", which the generic
+    # documents as NA -- and which the numeric method already returns.
+    y[x <= 0 | lv <= 0] <- NA_real_
     data.frame(x = x, y = y, level = lv)
   })
   do.call(rbind, rows)
@@ -332,7 +343,12 @@ optimal_bundle.default <- function(u, b, ...) {
 #' The slope of the indifference curve at `(x, y)`, expressed as a positive
 #' number: how much `y` the consumer would give up for one more unit of `x`.
 #' For Cobb-Douglas this is \eqn{\frac{\alpha}{\beta} \frac{y}{x}}; other
-#' functions use a central finite difference on each partial derivative.
+#' functions use a central finite difference on each partial derivative. The
+#' step is scaled to the coordinate (`h * |x|`, floored at `h * 1e-8`) so the
+#' estimate stays well-conditioned from near-axis points to quantities in the
+#' millions, and the backward point is never taken below zero -- at a point
+#' within a step of an axis the difference becomes one-sided rather than
+#' evaluating `u` on a negative quantity, where most utilities return `NaN`.
 #'
 #' At the optimal bundle the MRS equals the price ratio `px / py` -- the
 #' tangency condition -- which is a handy check on [optimal_bundle()].
@@ -340,7 +356,7 @@ optimal_bundle.default <- function(u, b, ...) {
 #' @param u A function of `x` and `y`.
 #' @param x,y Coordinates, recycled against each other.
 #' @param ... Passed on to methods.
-#' @param h Step for the finite difference (default method only).
+#' @param h Relative step for the finite difference (default method only).
 #'
 #' @return A numeric vector.
 #'
@@ -367,7 +383,19 @@ mrs.cobb_douglas <- function(u, x, y, ...) {
 #' @rdname mrs
 #' @export
 mrs.default <- function(u, x, y, ..., h = 1e-6) {
-  mu_x <- (u(x + h, y) - u(x - h, y)) / (2 * h)
-  mu_y <- (u(x, y + h) - u(x, y - h)) / (2 * h)
+  check_positive(h)
+  # A step proportional to the coordinate keeps the difference well-conditioned
+  # at every scale: an absolute 1e-6 is a 100x overshoot at x = 1e-8 (and
+  # pushes the backward point negative, where textbook utilities are NaN) and
+  # is lost to rounding at x = 1e6. The floor only matters at exactly zero.
+  h_x <- h * pmax(abs(x), 1e-8)
+  h_y <- h * pmax(abs(y), 1e-8)
+  # Quantities are non-negative, so never evaluate u() below zero; the
+  # difference is taken over the actual spacing, which turns a clamped point
+  # into a one-sided estimate rather than a wrong one.
+  x_lo <- pmax(x - h_x, 0)
+  y_lo <- pmax(y - h_y, 0)
+  mu_x <- (u(x + h_x, y) - u(x_lo, y)) / (x + h_x - x_lo)
+  mu_y <- (u(x, y + h_y) - u(x, y_lo)) / (y + h_y - y_lo)
   mu_x / mu_y
 }

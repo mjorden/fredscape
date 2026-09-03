@@ -27,8 +27,14 @@ the plane.}
 }
 \value{
 A data frame with columns \code{x}, \code{y} and \code{level}, one row per \code{x}
-per level, stacked in \code{level} order. \code{y} is \code{NA} where no solution exists
-in \code{y_range}.
+per level, stacked in \code{level} order. \code{y} is \code{NA} where no solution
+exists: for the numeric method, where the level is unreachable within
+\code{y_range}; for Cobb-Douglas, at \code{x <= 0} or \code{level <= 0}, where the
+closed form is undefined. The two methods agree wherever a level is
+unattainable and at \code{x = 0} for any positive level, so a caller can
+filter on \code{is.na(y)} without knowing which one ran. (At \code{level = 0}
+exactly, a Cobb-Douglas contour is the pair of axes; the closed form
+reports \code{NA} rather than pretend that is a curve.)
 }
 \description{
 For each \code{level}, finds the \code{y} that gives \eqn{u(x, y) = } \code{level} at

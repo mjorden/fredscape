@@ -19,7 +19,7 @@ mrs(u, x, y, ...)
 
 \item{...}{Passed on to methods.}
 
-\item{h}{Step for the finite difference (default method only).}
+\item{h}{Relative step for the finite difference (default method only).}
 }
 \value{
 A numeric vector.
@@ -28,7 +28,12 @@ A numeric vector.
 The slope of the indifference curve at \verb{(x, y)}, expressed as a positive
 number: how much \code{y} the consumer would give up for one more unit of \code{x}.
 For Cobb-Douglas this is \eqn{\frac{\alpha}{\beta} \frac{y}{x}}; other
-functions use a central finite difference on each partial derivative.
+functions use a central finite difference on each partial derivative. The
+step is scaled to the coordinate (\verb{h * |x|}, floored at \code{h * 1e-8}) so the
+estimate stays well-conditioned from near-axis points to quantities in the
+millions, and the backward point is never taken below zero -- at a point
+within a step of an axis the difference becomes one-sided rather than
+evaluating \code{u} on a negative quantity, where most utilities return \code{NaN}.
 }
 \details{
 At the optimal bundle the MRS equals the price ratio \code{px / py} -- the

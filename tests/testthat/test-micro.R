@@ -182,6 +182,57 @@ test_that("optimal_bundle() validates its inputs", {
   expect_error(optimal_bundle(cobb_douglas(0.5), list()), "budget")
 })
 
+test_that("Cobb-Douglas contours return the documented NA at x <= 0 and level <= 0 (#3)", {
+  u <- cobb_douglas(0.5)
+  expect_silent(curve <- indifference_curve(u, level = c(0, 4), x = c(0, 2)))
+  # x = 0 divides by zero; level = 0 is a fractional power of zero.
+  expect_true(is.na(curve$y[curve$x == 0 & curve$level == 4]))
+  expect_true(all(is.na(curve$y[curve$level == 0])))
+  expect_equal(curve$y[curve$x == 2 & curve$level == 4], 8)
+
+  expect_silent(neg <- indifference_curve(u, level = -1, x = c(-1, 1)))
+  expect_true(all(is.na(neg$y)))
+})
+
+test_that("both contour methods agree on the degenerate cases (#3)", {
+  cd <- cobb_douglas(0.3)
+  generic <- function(x, y) x^0.3 * y^0.7
+  # A negative level is unattainable for a positive utility; x = 0 pins the
+  # function at zero for any positive level. Both methods must say NA there.
+  # (level = 0 is excluded on purpose: its contour is the axes themselves, so
+  # the numeric method can legitimately answer y = 0 at x = 0.)
+  x <- c(0, 1, 5)
+  a <- indifference_curve(cd, level = c(-1, 3), x = x)
+  b <- suppressWarnings(indifference_curve(generic, level = c(-1, 3), x = x))
+  expect_identical(is.na(a$y), is.na(b$y))
+  expect_equal(a$y[!is.na(a$y)], b$y[!is.na(b$y)], tolerance = 1e-6)
+})
+
+test_that("mrs.default() is finite and accurate near the axes (#2)", {
+  cd <- cobb_douglas(0.3)
+  generic <- function(x, y) x^0.3 * y^0.7
+  # An absolute 1e-6 step would evaluate u() at a negative x here.
+  expect_silent(m <- mrs(generic, 1e-8, 5))
+  expect_true(is.finite(m))
+  expect_equal(m, mrs(cd, 1e-8, 5), tolerance = 1e-4)
+})
+
+test_that("mrs.default() keeps its precision at large magnitudes (#2)", {
+  cd <- cobb_douglas(0.3)
+  generic <- function(x, y) x^0.3 * y^0.7
+  expect_equal(mrs(generic, 1e6, 3e6), mrs(cd, 1e6, 3e6), tolerance = 1e-6)
+  expect_equal(mrs(generic, c(1e-8, 2, 1e6), c(5, 5, 5)),
+               mrs(cd, c(1e-8, 2, 1e6), c(5, 5, 5)), tolerance = 1e-4)
+})
+
+test_that("mrs.default() never evaluates u() on a negative quantity (#2)", {
+  seen <- numeric(0)
+  spy <- function(x, y) { seen <<- c(seen, x, y); x^0.5 * y^0.5 }
+  mrs(spy, 1e-9, 1e-9)
+  expect_true(all(seen >= 0))
+  expect_error(mrs(spy, 1, 1, h = 0), "positive")
+})
+
 test_that("mrs() has the Cobb-Douglas closed form and matches finite differences", {
   cd <- cobb_douglas(0.3)
   generic <- function(x, y) x^0.3 * y^0.7

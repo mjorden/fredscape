@@ -17,6 +17,16 @@ Consumer and producer theory, drawn in the house style.
   to a ggplot; `plot_consumer_choice()` composes the whole chart with the
   curves labelled by level.
 
+Fixes from the pre-release adversarial review:
+
+* The finite-difference fallback in `mrs()` now scales its step to the
+  coordinate and never evaluates the utility on a negative quantity, so it is
+  finite near the axes and accurate at large magnitudes instead of silently
+  returning `NaN` or a degraded number (#2).
+* `indifference_curve()` for Cobb-Douglas returns the documented `NA` at
+  `x <= 0` and `level <= 0` rather than `Inf`/`NaN`, matching the numeric
+  method (#3).
+
 # fredscape 0.1.0
 
 First release.
