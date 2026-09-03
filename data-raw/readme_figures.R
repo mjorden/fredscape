@@ -152,3 +152,14 @@ p_slutsky <- plot_price_change(
   source = "fredscape"
 )
 save_fig(econ_masthead(p_slutsky), "README-price-change", width = 7, height = 5.4)
+
+## 8. Cost curves -----------------------------------------------------------------
+
+f <- cobb_douglas(0.3, 0.5, A = 2, kind = "production")
+p_cost <- plot_cost_curves(
+  f, w = 20, r = 30, q = seq(1, 40, by = 0.25), fixed = 150,
+  title = "Where marginal meets average",
+  subtitle = "Cobb-Douglas production with decreasing returns; w = 20, r = 30, fixed cost 150",
+  source = "fredscape"
+)
+save_fig(econ_masthead(p_cost), "README-cost", width = 7, height = 4.6)

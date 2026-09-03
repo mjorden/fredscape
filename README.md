@@ -180,6 +180,19 @@ side.
 
 <img src="man/figures/README-price-change.png" width="80%" alt="Hicks decomposition of a price rise: two budget lines, a dashed compensated line, three bundles, and bracketed substitution and income effects" />
 
+The producer's side is the same mathematics with different names — a
+production function is a utility function over inputs, an isocost line is a
+budget line, the expenditure function is the total-cost function — so it
+comes for free:
+
+```r
+f <- cobb_douglas(0.3, 0.5, A = 2, kind = "production")   # decreasing returns
+plot_producer_choice(f, budget(600, 20, 30))               # isoquants + isocost
+cost_curves(f, w = 20, r = 30, q = 1:40, fixed = 150)      # total, average, marginal
+```
+
+<img src="man/figures/README-cost.png" width="80%" alt="Average and marginal cost curves, marginal crossing average at its minimum" />
+
 ## The palette
 
 <img src="man/figures/README-palette.png" width="100%" alt="Swatches of the five fredscape palettes" />
@@ -219,6 +232,8 @@ scale_fill_econ_c("redblue") # continuous, diverging
 | `demand_curve()` / `engel_curve()` / `*_consumption_path()` | Curves traced by the optimum as a price or income moves |
 | `price_change()` / `hicks()` / `slutsky()` / `plot_price_change()` | Substitution and income effects of a price change |
 | `expenditure()` | The expenditure function: least income to reach a utility (or least outlay for an output) |
+| `expansion_path()` / `conditional_demand()` / `cost_curves()` | Producer theory: input demands and total / average / marginal cost |
+| `plot_producer_choice()` / `plot_cost_curves()` | Isoquants with an isocost line; the AC / MC pair |
 | `geom_indifference()` / `geom_budget()` / `geom_optimum()` / `geom_demand()` / `geom_engel()` / `geom_consumption_path()` | The pieces as ggplot layers |
 | `plot_consumer_choice()` | The textbook diagram in one call |
 
