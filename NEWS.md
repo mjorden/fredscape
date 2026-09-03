@@ -1,3 +1,32 @@
+# fredscape 0.2.0
+
+Consumer and producer theory, drawn in the house style.
+
+* `cobb_douglas()` builds a callable utility or production function that
+  remembers its parameters; `print()` reports returns to scale.
+* `budget()` and `budget_line()` describe a budget constraint or isocost.
+* `indifference_curve()` returns contours: closed form for Cobb-Douglas, a
+  `uniroot()` fallback for any other function of two goods (Leontief, CES,
+  quasi-linear, ...).
+* `optimal_bundle()` solves the consumer's problem: Cobb-Douglas share rule in
+  closed form, `optimize()` along the budget line otherwise, with the corners
+  checked so perfect substitutes land on the right axis.
+* `mrs()` gives the marginal rate of substitution, closed form or finite
+  difference.
+* `geom_indifference()`, `geom_budget()` and `geom_optimum()` add each piece
+  to a ggplot; `plot_consumer_choice()` composes the whole chart with the
+  curves labelled by level.
+
+Fixes from the pre-release adversarial review:
+
+* The finite-difference fallback in `mrs()` now scales its step to the
+  coordinate and never evaluates the utility on a negative quantity, so it is
+  finite near the axes and accurate at large magnitudes instead of silently
+  returning `NaN` or a degraded number (#2).
+* `indifference_curve()` for Cobb-Douglas returns the documented `NA` at
+  `x <= 0` and `level <= 0` rather than `Inf`/`NaN`, matching the numeric
+  method (#3).
+
 # fredscape 0.1.0
 
 First release.

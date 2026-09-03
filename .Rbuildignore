@@ -7,3 +7,5 @@
 ^\.vscode$
 ^man/figures/README-.*\.png$
 ^\.scratch$
+^\.adversarial-review$
+^adversarial-review-log$

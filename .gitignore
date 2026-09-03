@@ -10,3 +10,4 @@ docs/
 *.Rcheck/
 .scratch/
 Rplots.pdf
+.adversarial-review/

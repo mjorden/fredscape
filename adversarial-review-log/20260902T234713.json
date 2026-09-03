@@ -1,0 +1,55 @@
+{
+  "schema_version": "1",
+  "run_id": "20260902T234713",
+  "ts": "2026-09-02T23:59:12Z",
+  "plugin": "adversarial-review",
+  "mode": "dry-run",
+  "outcome": "dry-run",
+  "tokens": null,
+  "detail": {
+    "base_ref": "origin/main",
+    "head_sha": "c379099e0e67d71e5e196ccdea1beea6f69f6a9d",
+    "head_drifted": false,
+    "rounds_run": 1,
+    "max_rounds": 5,
+    "reviewers_configured": [
+      "generalist",
+      "security",
+      "architecture",
+      "iac",
+      "iac_ci"
+    ],
+    "skipped_reviewers": [
+      "architecture",
+      "iac",
+      "iac_ci"
+    ],
+    "per_reviewer_rounds": {
+      "generalist": 1,
+      "security": 1,
+      "architecture": 0,
+      "iac": 0,
+      "iac_ci": 0
+    },
+    "blocked_reviewers": [],
+    "forced_rounds": [],
+    "agent_dispatches": 3,
+    "issue_counts": {
+      "total": 3,
+      "open": 3,
+      "by_status": {
+        "accepted": 0,
+        "modified": 0,
+        "rejected": 0,
+        "deferred": 0,
+        "resolved": 0,
+        "withdrawn": 0
+      }
+    },
+    "publish_status": "skipped:dry-run",
+    "post_implementation_review": {
+      "enabled": false,
+      "runs": []
+    }
+  }
+}
