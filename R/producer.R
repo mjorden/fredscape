@@ -93,24 +93,24 @@ cost_curves <- function(f, w, r, q, fixed = 0) {
     output = q,
     total = total,
     average = total / q,
-    marginal = marginal_cost(f, w, r, q)
+    marginal = mc_production(f, w, r, q)
   )
 }
 
-#' Marginal cost at each output level
+#' Marginal cost of production at each output level (internal; see marginal_cost() for cost objects)
 #' @noRd
-marginal_cost <- function(f, w, r, q) {
-  UseMethod("marginal_cost")
+mc_production <- function(f, w, r, q) {
+  UseMethod("mc_production")
 }
 
 #' @noRd
-marginal_cost.cobb_douglas <- function(f, w, r, q) {
+mc_production.cobb_douglas <- function(f, w, r, q) {
   d <- attr(f, "alpha") + attr(f, "beta")
   expenditure(f, w, r, q) / (d * q)
 }
 
 #' @noRd
-marginal_cost.default <- function(f, w, r, q) {
+mc_production.default <- function(f, w, r, q) {
   numeric_derivative(function(lv) expenditure(f, w, r, lv))(q)
 }
 

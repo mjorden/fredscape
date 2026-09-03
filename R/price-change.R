@@ -218,7 +218,7 @@ hicks <- function(u, b, new_px = NULL, new_py = NULL) {
 
 #' @export
 print.price_change <- function(x, ...) {
-  fmt <- function(v) formatC(v, digits = 4, format = "g")
+  fmt <- function(v) format(signif(v, 4), trim = TRUE)
   cat(sprintf("<Price change: p%s %s -> %s, %s compensation>\n",
               x$good, fmt(x$old_price), fmt(x$new_price),
               if (x$method == "hicks") "Hicksian" else "Slutsky"))

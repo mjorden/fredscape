@@ -1,3 +1,23 @@
+# fredscape 0.7.0
+
+Market structure (#13): the demand side, and the equilibria that put it
+together with the cost side.
+
+* Demand objects: `linear_demand(intercept, slope)` and `demand_fn()` for
+  any inverse demand; `price_at()`, `quantity_at()`, `marginal_revenue()`,
+  `elasticity()`, `consumer_surplus()`, closed-form for linear.
+* Cost objects: `quadratic_cost(fixed, a, b)` and `production_cost()` built
+  on `expenditure()`; `total_cost()`, `variable_cost()`, `marginal_cost()`,
+  `average_cost()`, `min_average_cost()`.
+* `monopoly()`, `cournot(n)` and `perfect_competition(n)` (short run with a
+  shutdown check; long run with free entry when `n` is omitted) all return a
+  `market_outcome`: price, industry and per-firm quantity, profit, consumer
+  and producer surplus, deadweight loss against the `P = MC` benchmark,
+  Lerner index and demand elasticity at the outcome.
+* `plot_market()` draws demand, marginal revenue and marginal cost with the
+  surplus and deadweight-loss areas shaded; `compare_structures()` tabulates
+  how price and welfare move as the number of firms grows.
+
 # fredscape 0.6.0
 
 Producer theory (#8), on the same machinery as the consumer side:
