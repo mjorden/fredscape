@@ -29,7 +29,8 @@ curve_grid <- function(xlim, n) {
 #'
 #' * `geom_indifference()` draws one path per `level`.
 #' * `geom_budget()` draws the budget (or isocost) line between its two
-#'   intercepts.
+#'   intercepts. Given a list of budgets it draws one line each, which is how
+#'   a price or income change is shown.
 #' * `geom_optimum()` marks the chosen bundle, with dashed lines dropping to
 #'   each axis.
 #'
@@ -37,7 +38,7 @@ curve_grid <- function(xlim, n) {
 #' @param levels Utility (or output) levels, one curve each.
 #' @param xlim Range of `x` over which to draw the curves.
 #' @param n Number of points per curve.
-#' @param b A [budget()].
+#' @param b A [budget()], or for `geom_budget()` a list of them.
 #' @param colour Line or point colour.
 #' @param linewidth Line width.
 #' @param linetype Line type; the drop lines in `geom_optimum()` are always
@@ -102,13 +103,26 @@ geom_indifference <- function(u, levels, xlim, n = 200L,
 #' @export
 geom_budget <- function(b, colour = unname(econ_hex["red"]),
                         linewidth = 0.8, linetype = "solid", ...) {
-  if (!inherits(b, "budget")) {
-    cli::cli_abort("{.arg b} must be a {.fn budget} object.")
+  budgets <- if (inherits(b, "budget")) list(b) else b
+  if (!is.list(budgets) || length(budgets) == 0L ||
+      !all(vapply(budgets, inherits, logical(1), what = "budget"))) {
+    cli::cli_abort("{.arg b} must be a {.fn budget} object or a list of them.")
   }
-  ggplot2::annotate(
-    "segment",
-    x = 0, y = b$y_max, xend = b$x_max, yend = 0,
-    colour = colour, linewidth = linewidth, linetype = linetype, ...
+  # One segment per budget, from the y intercept to the x intercept. Built as
+  # data rather than annotate() so a family of lines is a single layer that
+  # colour/linetype vectors can be recycled across.
+  lines <- data.frame(
+    x = 0,
+    y = vapply(budgets, function(bb) bb$y_max, numeric(1)),
+    xend = vapply(budgets, function(bb) bb$x_max, numeric(1)),
+    yend = 0
+  )
+  ggplot2::geom_segment(
+    data = lines,
+    mapping = ggplot2::aes(x = .data$x, y = .data$y,
+                           xend = .data$xend, yend = .data$yend),
+    colour = colour, linewidth = linewidth, linetype = linetype,
+    inherit.aes = FALSE, ...
   )
 }
 

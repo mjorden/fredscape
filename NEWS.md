@@ -1,3 +1,16 @@
+# fredscape 0.4.0
+
+Curves traced by the optimal bundle (#6):
+
+* `demand_curve()` and `engel_curve()` evaluate `optimal_bundle()` across a
+  vector of prices or incomes and return tidy `(price, quantity)` /
+  `(income, quantity)` frames; `price_consumption_path()` and
+  `income_consumption_path()` keep the whole bundle.
+* `geom_demand()` draws price against quantity the textbook way round;
+  `geom_engel()` and `geom_consumption_path()` draw the other two.
+* `geom_budget()` accepts a list of budgets and draws one line each, with
+  `colour` / `linetype` recycled across the family.
+
 # fredscape 0.3.0
 
 Four more utility (and production) function constructors, each with the same
