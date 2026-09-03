@@ -245,10 +245,12 @@ two_part_tariff <- function(demands, cost, n = 1) {
     p_top <- min(vapply(demands[served], function(d) price_at(d, 0), numeric(1)))
     opt <- stats::optimize(function(p) -profit_at(p, served), c(0, p_top), tol = 1e-9)
     # optimize() cannot land exactly on marginal cost, which is the answer
-    # in the identical-consumer case; check it explicitly.
+    # in the identical-consumer case; check it explicitly, and let it win
+    # any tie within rounding -- on some platforms the search stops a few
+    # 1e-7 away with a profit larger by 1e-9, which is noise, not a result.
     p_mc <- min(max(mc0, 0), p_top)
     at_mc <- profit_at(p_mc, served)
-    if (at_mc >= -opt$objective) {
+    if (at_mc >= -opt$objective - 1e-8 * max(1, abs(at_mc))) {
       list(served = served, price = p_mc, profit = at_mc)
     } else {
       list(served = served, price = opt$minimum, profit = -opt$objective)
