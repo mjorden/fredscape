@@ -167,3 +167,49 @@ test_that("plot_two_part_tariff() builds and picks the fee-setting type", {
   single <- plot_two_part_tariff(two_part_tariff(d, flat))
   expect_s3_class(ggplot2::ggplot_build(single), "ggplot_built")
 })
+
+## Review follow-ups ---------------------------------------------------------
+
+test_that("a partially named demand list gets names for the blanks", {
+  td <- third_degree(list(students = students, d), flat)
+  expect_identical(td$segments$segment, c("students", "segment_2"))
+  tp <- two_part_tariff(list(linear_demand(60, 1), heavy = d), flat, n = c(5, 1))
+  expect_identical(tp$types$type, c("segment_1", "heavy"))
+  # The fee-setting type is the unnamed one; the plot must still find it.
+  expect_s3_class(ggplot2::ggplot_build(plot_two_part_tariff(tp)), "ggplot_built")
+  expect_error(third_degree(list(a = d, a = students), flat), "duplicated")
+})
+
+test_that("third-degree discrimination survives falling marginal cost", {
+  irs <- production_cost(cobb_douglas(0.6, 0.6, kind = "production"), w = 20, r = 30)
+  td <- third_degree(list(students = students, others = d), irs)
+  expect_true(td$quantity > 0)
+  expect_true(all(td$segments$quantity > 0))
+  mc <- marginal_cost(irs, td$quantity)
+  expect_equal(marginal_revenue(students, td$segments$quantity[1]), mc, tolerance = 1e-5)
+  expect_equal(marginal_revenue(d, td$segments$quantity[2]), mc, tolerance = 1e-5)
+  # Segmenting can always replicate a uniform price, so it never earns less.
+  expect_true(td$profit >= td$uniform$profit_firm - 1e-6)
+})
+
+test_that("aggregate_demand() answers quantity_at() directly and exactly", {
+  both <- aggregate_demand(list(students, d))
+  expect_true(is.function(both$q_of_p))
+  expect_identical(quantity_at(both, c(40, 80, 150)), c(100, 20, 0))
+  expect_equal(price_at(both, quantity_at(both, 40)), 40, tolerance = 1e-8)
+  # The direct path never touches p_of_q: swap it for one that would fail.
+  spy <- both
+  spy$p_of_q <- function(q) stop("p_of_q should not be called by quantity_at()")
+  expect_identical(quantity_at(spy, 40), 100)
+})
+
+test_that("plot_market() handles first-degree discrimination", {
+  fd <- first_degree(d, flat)
+  p <- plot_market(fd)
+  expect_identical(p$labels$title, "First-degree price discrimination")
+  ribbons <- sum(vapply(p$layers, function(l) inherits(l$geom, "GeomRibbon"), logical(1)))
+  expect_identical(ribbons, 1L)   # one area: all of it to the seller
+  expect_s3_class(ggplot2::ggplot_build(p), "ggplot_built")
+  bogus <- fd; bogus$structure <- "something else"
+  expect_error(plot_market(bogus), "Unknown market structure")
+})

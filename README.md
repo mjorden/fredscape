@@ -174,9 +174,9 @@ plot_price_change(u, b, new_px = 6)
 ```
 
 Hicks compensation holds utility fixed; Slutsky holds purchasing power fixed.
-Both rest on `expenditure()`, the expenditure function, which has closed forms
-for every constructor and doubles as the total-cost function on the producer
-side.
+Both rest on `expenditure()`, the expenditure function, which has a dedicated
+method for every constructor and doubles as the total-cost function on the
+producer side.
 
 <img src="man/figures/README-price-change.png" width="80%" alt="Hicks decomposition of a price rise: two budget lines, a dashed compensated line, three bundles, and bracketed substitution and income effects" />
 
@@ -314,7 +314,7 @@ that reports its length, not its value.
 Rscript -e 'devtools::test()'
 ```
 
-179 tests, no network required. The API parsers run against saved payloads in
+The full suite runs with no network. The API parsers run against saved payloads in
 `tests/testthat/fixtures/`; the argument validators are checked to fire before
 any request is built; the recession logic is round-tripped through a
 reconstructed `USREC` indicator.

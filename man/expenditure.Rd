@@ -4,6 +4,7 @@
 \alias{expenditure}
 \alias{expenditure.cobb_douglas}
 \alias{expenditure.ces}
+\alias{expenditure.quasilinear}
 \alias{expenditure.leontief}
 \alias{expenditure.perfect_substitutes}
 \alias{expenditure.default}
@@ -14,6 +15,8 @@ expenditure(u, px, py, level, ...)
 \method{expenditure}{cobb_douglas}(u, px, py, level, ...)
 
 \method{expenditure}{ces}(u, px, py, level, ...)
+
+\method{expenditure}{quasilinear}(u, px, py, level, ...)
 
 \method{expenditure}{leontief}(u, px, py, level, ...)
 
@@ -37,9 +40,12 @@ A numeric vector the length of \code{level}.
 The least income needed to reach a given utility (or, for a production
 function, the least outlay needed to produce a given output) at the stated
 prices. This is the object behind Hicksian compensation and behind the
-total-cost curve, so the package's constructors carry closed forms; any
-other function is solved by finding the income at which
-\code{\link[=optimal_bundle]{optimal_bundle()}} just reaches \code{level}, using \code{\link[stats:uniroot]{stats::uniroot()}}.
+total-cost curve, so every constructor has a dedicated method: closed
+forms for Cobb-Douglas, CES, Leontief and perfect substitutes, and for
+quasi-linear utility a single root-find for the first-order condition
+followed by the closed form. Any other function is solved by finding the
+income at which \code{\link[=optimal_bundle]{optimal_bundle()}} just reaches \code{level}, using
+\code{\link[stats:uniroot]{stats::uniroot()}}.
 }
 \examples{
 u <- cobb_douglas(alpha = 0.3)

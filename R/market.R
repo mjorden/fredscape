@@ -146,6 +146,9 @@ quantity_at.linear_demand <- function(d, p, ...) {
 
 #' @export
 quantity_at.general_demand <- function(d, p, ...) {
+  if (is.function(d$q_of_p)) {
+    return(pmax(d$q_of_p(p), 0))
+  }
   vapply(p, function(pp) {
     if (pp >= price_at(d, 0)) return(0)
     if (pp <= price_at(d, d$q_max)) return(d$q_max)

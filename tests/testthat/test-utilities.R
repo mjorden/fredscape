@@ -221,3 +221,26 @@ test_that("plot_consumer_choice() builds for every constructor", {
     expect_s3_class(ggplot2::ggplot_build(plot_consumer_choice(u, b)), "ggplot_built")
   }
 })
+
+## Review follow-ups ---------------------------------------------------------
+
+test_that("CES at rho = 1 is perfect substitutes on the full bundle, at both corners", {
+  u <- ces(rho = 1, alpha = 0.4)
+  s <- perfect_substitutes(a = 0.4, b = 0.6)
+  # y wins the corner here (k would be Inf, and Inf * 0 gave NaN before).
+  y_wins <- budget(100, 3, 2)
+  expect_equal(optimal_bundle(u, y_wins)[, c("x", "y", "utility")],
+               optimal_bundle(s, y_wins)[, c("x", "y", "utility")])
+  expect_true(all(is.finite(unlist(optimal_bundle(u, y_wins)))))
+  x_wins <- budget(100, 1, 5)
+  expect_equal(optimal_bundle(u, x_wins)[, c("x", "y", "utility")],
+               optimal_bundle(s, x_wins)[, c("x", "y", "utility")])
+  # Expenditure too: min(px / a, py / b) per unit of utility.
+  expect_equal(expenditure(u, 3, 2, 30), 30 * min(3 / 0.4, 2 / 0.6))
+  expect_equal(expenditure(u, 3, 2, 30), expenditure(s, 3, 2, 30))
+  # And the tie carries its flag through.
+  expect_true(attr(optimal_bundle(u, budget(100, 0.4, 0.6)), "indeterminate"))
+  # Hicks decomposition no longer produces NaN.
+  pc <- hicks(u, budget(100, 0.4, 0.6), new_px = 3)
+  expect_true(all(is.finite(unlist(pc$bundles[, c("x", "y")]))))
+})

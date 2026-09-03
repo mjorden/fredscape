@@ -21,14 +21,20 @@ aggregate_demand <- function(demands) {
   demands <- check_demand_list(demands)
   choke <- max(vapply(demands, function(d) price_at(d, 0), numeric(1)))
   q_total <- function(p) sum(vapply(demands, function(d) quantity_at(d, p), numeric(1)))
+  q0 <- q_total(0)
   p_of_q <- function(q) {
     vapply(q, function(qq) {
       if (qq <= 0) return(choke)
-      if (qq >= q_total(0)) return(0)
+      if (qq >= q0) return(0)
       stats::uniroot(function(p) q_total(p) - qq, c(0, choke), tol = 1e-10)$root
     }, numeric(1))
   }
-  demand_fn(p_of_q, q_max = q_total(0))
+  out <- demand_fn(p_of_q, q_max = q0)
+  # The price-to-quantity direction is the cheap one here; keep it so
+  # quantity_at() can answer directly instead of inverting p_of_q, which
+  # would put a root-find inside a root-find.
+  out$q_of_p <- function(p) vapply(p, q_total, numeric(1))
+  out
 }
 
 #' @noRd
@@ -40,9 +46,17 @@ check_demand_list <- function(demands, arg = rlang::caller_arg(demands)) {
       !all(vapply(demands, inherits, logical(1), what = "demand"))) {
     cli::cli_abort("{.arg {arg}} must be a demand object or a list of them.")
   }
-  if (is.null(names(demands))) {
-    names(demands) <- paste0("segment_", seq_along(demands))
+  # Name every unnamed element, not just a wholly unnamed list: a partially
+  # named list has names() of c("a", ""), and a blank name breaks the
+  # name-based lookups downstream.
+  nm <- names(demands)
+  if (is.null(nm)) nm <- character(length(demands))
+  blank <- is.na(nm) | !nzchar(nm)
+  nm[blank] <- paste0("segment_", seq_along(demands))[blank]
+  if (anyDuplicated(nm)) {
+    cli::cli_abort("{.arg {arg}} has duplicated names: {.val {nm[duplicated(nm)]}}.")
   }
+  names(demands) <- nm
   demands
 }
 
@@ -122,15 +136,11 @@ third_degree <- function(demands, cost) {
   total_at <- function(m) sum(vapply(demands, quantity_at_mr, numeric(1), m = m))
   choke <- max(vapply(demands, function(d) price_at(d, 0), numeric(1)))
   # Total quantity falls as the common marginal-revenue level m rises, so
-  # MC(Q(m)) - m is decreasing and has one root.
+  # MC(Q(m)) - m usually falls through zero once. Not always: with falling
+  # marginal cost (increasing returns) it can dip below zero and come back,
+  # so bracket the crossing the same way the other structures do.
   gap <- function(m) marginal_cost(cost, total_at(m)) - m
-  m <- if (gap(0) <= 0) {
-    0
-  } else if (gap(choke) >= 0) {
-    choke
-  } else {
-    stats::uniroot(gap, c(0, choke), tol = 1e-10)$root
-  }
+  m <- solve_on(gap, choke)
 
   q <- vapply(demands, quantity_at_mr, numeric(1), m = m)
   p <- mapply(function(d, qq) price_at(d, qq), demands, q)
