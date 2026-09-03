@@ -158,6 +158,28 @@ is one layer.
 
 <img src="man/figures/README-demand.png" width="80%" alt="A downward-sloping demand curve for a Cobb-Douglas consumer, price on the vertical axis" />
 
+And the diagram every intermediate course draws: what a price change does,
+split into the part that is about relative prices and the part that is
+about being poorer.
+
+```r
+pc <- hicks(u, b, new_px = 6)     # or slutsky()
+pc$effects
+#>         effect     dx     dy
+#> 1 substitution -5.444  5.751
+#> 2       income -2.556 -5.751
+#> 3        total -8.000  0.000
+
+plot_price_change(u, b, new_px = 6)
+```
+
+Hicks compensation holds utility fixed; Slutsky holds purchasing power fixed.
+Both rest on `expenditure()`, the expenditure function, which has closed forms
+for every constructor and doubles as the total-cost function on the producer
+side.
+
+<img src="man/figures/README-price-change.png" width="80%" alt="Hicks decomposition of a price rise: two budget lines, a dashed compensated line, three bundles, and bracketed substitution and income effects" />
+
 ## The palette
 
 <img src="man/figures/README-palette.png" width="100%" alt="Swatches of the five fredscape palettes" />
@@ -195,6 +217,8 @@ scale_fill_econ_c("redblue") # continuous, diverging
 | `budget()` | A budget or isocost constraint |
 | `indifference_curve()` / `optimal_bundle()` / `mrs()` | Contours, the chosen bundle, marginal rate of substitution — closed form for Cobb-Douglas, numeric for anything else |
 | `demand_curve()` / `engel_curve()` / `*_consumption_path()` | Curves traced by the optimum as a price or income moves |
+| `price_change()` / `hicks()` / `slutsky()` / `plot_price_change()` | Substitution and income effects of a price change |
+| `expenditure()` | The expenditure function: least income to reach a utility (or least outlay for an output) |
 | `geom_indifference()` / `geom_budget()` / `geom_optimum()` / `geom_demand()` / `geom_engel()` / `geom_consumption_path()` | The pieces as ggplot layers |
 | `plot_consumer_choice()` | The textbook diagram in one call |
 
