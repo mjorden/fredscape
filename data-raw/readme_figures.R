@@ -141,3 +141,14 @@ p_demand <- ggplot() +
   theme(axis.line.y = element_line(colour = "#1A1A1A", linewidth = 0.5),
         axis.title = element_text(hjust = 1))
 save_fig(econ_masthead(p_demand), "README-demand", width = 7, height = 4.6)
+
+## 7. Price change ---------------------------------------------------------------
+
+p_slutsky <- plot_price_change(
+  u, b, new_px = 6,
+  goods = c("Coffee, cups", "Bagels"),
+  title = "When coffee doubles in price",
+  subtitle = "Hicks decomposition; income 120, bagels at 4, coffee from 3 to 6",
+  source = "fredscape"
+)
+save_fig(econ_masthead(p_slutsky), "README-price-change", width = 7, height = 5.4)

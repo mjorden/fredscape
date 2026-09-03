@@ -1,3 +1,18 @@
+# fredscape 0.5.0
+
+The substitution / income decomposition of a price change (#7):
+
+* `price_change()`, with `hicks()` and `slutsky()` shorthands, returns the
+  original, compensated and final bundles, the three budgets, and the
+  substitution / income / total effects on both goods.
+* `expenditure()` -- the expenditure function -- underlies Hicksian
+  compensation, with closed forms for every constructor and a `uniroot()`
+  fallback. It is also the total-cost function of producer theory, which the
+  next release builds on.
+* `plot_price_change()` draws the diagram: both budget lines, the dashed
+  compensated line, the indifference curves through the bundles, and
+  bracketed arrows along the axis for each effect.
+
 # fredscape 0.4.0
 
 Curves traced by the optimal bundle (#6):
