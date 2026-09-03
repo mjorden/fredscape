@@ -122,11 +122,27 @@ up yourself.
 
 <img src="man/figures/README-choice.png" width="80%" alt="Three Cobb-Douglas indifference curves, a budget line, and the tangency point, in Economist style" />
 
-Anything that isn't Cobb-Douglas still works: pass any function of `x` and
+The other textbook preferences come with the same closed forms:
+
+```r
+ces(rho = -1, alpha = 0.4)                       # constant elasticity of substitution
+leontief(a = 1, b = 2)                           # perfect complements: one x per two y
+perfect_substitutes(a = 1, b = 2)                # linear; picks a corner
+quasilinear(log, f_prime = function(x) 1 / x)    # f(x) + y; no income effect on x
+```
+
+`ces()` nests the others — Cobb-Douglas as `rho → 0`, substitutes at
+`rho = 1`, Leontief as `rho → −∞` — and the tests check each limit against
+the dedicated constructor. Leontief's L-shaped contours draw properly,
+including the vertical arm, and its `mrs()` gives the textbook answer:
+`Inf` below the ray, `0` above it, `NA` at the kink.
+
+<img src="man/figures/README-leontief.png" width="80%" alt="Leontief L-shaped indifference curves with a budget line and the optimum at the kink" />
+
+Anything that isn't one of these still works: pass any function of `x` and
 `y` and the contours are found by bisection, the optimum by a line search
-along the budget line. Perfect complements (`function(x, y) pmin(x, y)`) and
-perfect substitutes (`function(x, y) x + 2 * y`, which correctly lands on a
-corner) are both covered by the tests.
+along the budget line — and every closed form above is tested against that
+generic path.
 
 ## The palette
 
@@ -161,7 +177,8 @@ scale_fill_econ_c("redblue") # continuous, diverging
 | `annotate_recessions()` | Recession bands behind the data |
 | `econ_masthead()` | The red block above the title |
 | `nber_recessions` | Every NBER-dated US contraction since 1857 |
-| `cobb_douglas()` / `budget()` | Utility or production function; budget or isocost constraint |
+| `cobb_douglas()` / `ces()` / `leontief()` / `perfect_substitutes()` / `quasilinear()` | Utility or production functions that carry their parameters |
+| `budget()` | A budget or isocost constraint |
 | `indifference_curve()` / `optimal_bundle()` / `mrs()` | Contours, the chosen bundle, marginal rate of substitution — closed form for Cobb-Douglas, numeric for anything else |
 | `geom_indifference()` / `geom_budget()` / `geom_optimum()` | The pieces as ggplot layers |
 | `plot_consumer_choice()` | The textbook diagram in one call |

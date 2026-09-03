@@ -73,7 +73,7 @@ geom_indifference <- function(u, levels, xlim, n = 200L,
   x <- curve_grid(xlim, n)
   df <- indifference_curve(u, level = levels, x = x)
   df <- df[is.finite(df$y), , drop = FALSE]
-  ggplot2::geom_path(
+  path <- ggplot2::geom_path(
     data = df,
     mapping = ggplot2::aes(x = .data$x, y = .data$y, group = .data$level),
     colour = colour,
@@ -81,6 +81,21 @@ geom_indifference <- function(u, levels, xlim, n = 200L,
     inherit.aes = FALSE,
     ...
   )
+  if (!inherits(u, "leontief")) {
+    return(path)
+  }
+  # A Leontief contour is L-shaped, and indifference_curve() can only return
+  # one y per x -- the horizontal arm. Draw the vertical arm from the kink up
+  # to the top of the panel as a separate segment per level.
+  kink_x <- attr(u, "a") * levels / attr(u, "A")
+  kink_y <- attr(u, "b") * levels / attr(u, "A")
+  keep <- levels > 0
+  arms <- ggplot2::annotate(
+    "segment",
+    x = kink_x[keep], xend = kink_x[keep], y = kink_y[keep], yend = Inf,
+    colour = colour, linewidth = linewidth
+  )
+  list(path, arms)
 }
 
 #' @rdname geom_micro
