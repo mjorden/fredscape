@@ -49,7 +49,7 @@ geom_optimum(
 
 \item{...}{Passed to the underlying geom.}
 
-\item{b}{A \code{\link[=budget]{budget()}}.}
+\item{b}{A \code{\link[=budget]{budget()}}, or for \code{geom_budget()} a list of them.}
 
 \item{linetype}{Line type; the drop lines in \code{geom_optimum()} are always
 dashed.}
@@ -72,7 +72,8 @@ combined with other data.
 \itemize{
 \item \code{geom_indifference()} draws one path per \code{level}.
 \item \code{geom_budget()} draws the budget (or isocost) line between its two
-intercepts.
+intercepts. Given a list of budgets it draws one line each, which is how
+a price or income change is shown.
 \item \code{geom_optimum()} marks the chosen bundle, with dashed lines dropping to
 each axis.
 }

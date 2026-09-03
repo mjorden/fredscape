@@ -144,6 +144,20 @@ Anything that isn't one of these still works: pass any function of `x` and
 along the budget line — and every closed form above is tested against that
 generic path.
 
+Ask the optimum the same question many times and you get the derived curves:
+
+```r
+demand_curve(u, b, prices = seq(0.5, 12, by = 0.5))     # (price, quantity)
+engel_curve(u, b, incomes = seq(40, 400, by = 40))      # (income, quantity)
+income_consumption_path(u, b, incomes = c(60, 120, 180)) # the bundles themselves
+```
+
+`geom_demand()` draws price against quantity the way the textbooks do;
+`geom_budget()` takes a list of budgets so the family of lines behind a path
+is one layer.
+
+<img src="man/figures/README-demand.png" width="80%" alt="A downward-sloping demand curve for a Cobb-Douglas consumer, price on the vertical axis" />
+
 ## The palette
 
 <img src="man/figures/README-palette.png" width="100%" alt="Swatches of the five fredscape palettes" />
@@ -180,7 +194,8 @@ scale_fill_econ_c("redblue") # continuous, diverging
 | `cobb_douglas()` / `ces()` / `leontief()` / `perfect_substitutes()` / `quasilinear()` | Utility or production functions that carry their parameters |
 | `budget()` | A budget or isocost constraint |
 | `indifference_curve()` / `optimal_bundle()` / `mrs()` | Contours, the chosen bundle, marginal rate of substitution — closed form for Cobb-Douglas, numeric for anything else |
-| `geom_indifference()` / `geom_budget()` / `geom_optimum()` | The pieces as ggplot layers |
+| `demand_curve()` / `engel_curve()` / `*_consumption_path()` | Curves traced by the optimum as a price or income moves |
+| `geom_indifference()` / `geom_budget()` / `geom_optimum()` / `geom_demand()` / `geom_engel()` / `geom_consumption_path()` | The pieces as ggplot layers |
 | `plot_consumer_choice()` | The textbook diagram in one call |
 
 ## Design notes

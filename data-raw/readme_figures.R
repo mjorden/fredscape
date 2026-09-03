@@ -123,3 +123,21 @@ p_leontief <- plot_consumer_choice(
   source = "fredscape"
 )
 save_fig(econ_masthead(p_leontief), "README-leontief", width = 7, height = 5.2)
+
+## 6. Demand curve ---------------------------------------------------------------
+
+d <- demand_curve(u, b, prices = seq(0.75, 12, by = 0.25))
+p_demand <- ggplot() +
+  geom_demand(d) +
+  scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0, 0.02))) +
+  scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0, 0.05))) +
+  labs_econ(
+    title = "Downward sloping, as advertised",
+    subtitle = "Demand for coffee from the Cobb-Douglas consumer above; income 120, bagels at 4",
+    source = "fredscape"
+  ) +
+  labs(x = "Cups of coffee", y = "Price per cup") +
+  theme_econ(grid = "both") +
+  theme(axis.line.y = element_line(colour = "#1A1A1A", linewidth = 0.5),
+        axis.title = element_text(hjust = 1))
+save_fig(econ_masthead(p_demand), "README-demand", width = 7, height = 4.6)
