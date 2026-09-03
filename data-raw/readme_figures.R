@@ -174,3 +174,17 @@ p_monopoly <- plot_market(
   source = "fredscape"
 )
 save_fig(econ_masthead(p_monopoly), "README-monopoly", width = 7, height = 5)
+
+## 10. Two-part tariff -------------------------------------------------------------
+
+light <- linear_demand(intercept = 60, slope = 1)
+heavy <- linear_demand(intercept = 100, slope = 1)
+tp <- two_part_tariff(list(light = light, heavy = heavy), quadratic_cost(a = 20), n = c(5, 1))
+p_tariff <- plot_two_part_tariff(
+  tp,
+  title = "The Disneyland dilemma",
+  subtitle = sprintf("Five light users for every heavy one: fee %s, unit price %s, above marginal cost 20",
+                     format(signif(tp$fee, 3)), format(signif(tp$price, 3))),
+  source = "fredscape"
+)
+save_fig(econ_masthead(p_tariff), "README-tariff", width = 7, height = 4.8)

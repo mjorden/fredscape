@@ -445,12 +445,17 @@ efficient_quantity <- function(d, cost, n) {
 
 #' Assemble the outcome object shared by every structure
 #' @noRd
-market_outcome <- function(structure, d, cost, n, q_firm, note = NULL) {
+market_outcome <- function(structure, d, cost, n, q_firm, note = NULL,
+                           price = NULL, consumer_surplus = NULL,
+                           producer_surplus = NULL) {
   Q <- n * q_firm
-  P <- price_at(d, Q)
-  profit <- P * q_firm - total_cost(cost, q_firm)
-  cs <- consumer_surplus(d, Q)
-  ps <- P * Q - n * variable_cost(cost, q_firm)
+  P <- price %||% price_at(d, Q)
+  # A discriminating seller has no single price and takes surplus the
+  # uniform-price formulas do not see, so those callers pass their own.
+  cs <- consumer_surplus %||% consumer_surplus(d, Q)
+  ps <- producer_surplus %||% (P * Q - n * variable_cost(cost, q_firm))
+  profit <- ps - n * (total_cost(cost, q_firm) - variable_cost(cost, q_firm))
+  profit <- profit / n
 
   Q_eff <- efficient_quantity(d, cost, n)
   P_eff <- price_at(d, Q_eff)
