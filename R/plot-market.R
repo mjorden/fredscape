@@ -6,8 +6,10 @@
 #' surplus between the price and marginal cost, and the deadweight-loss
 #' triangle between the outcome and the efficient quantity.
 #'
-#' @param outcome A `market_outcome` from [monopoly()], [cournot()] or
-#'   [perfect_competition()].
+#' @param outcome A `market_outcome` from [monopoly()], [cournot()],
+#'   [perfect_competition()] or [first_degree()]. For first-degree
+#'   discrimination the whole area between demand and marginal cost is
+#'   shaded as producer surplus, since that is who gets it.
 #' @param q_max Right-hand limit of the quantity axis. Defaults to the
 #'   demand curve's `q_max`.
 #' @param shade Which areas to shade: any of `"cs"`, `"ps"`, `"dwl"`.
@@ -76,25 +78,38 @@ plot_market <- function(outcome, q_max = NULL, shade = c("cs", "ps", "dwl"),
   mc_line <- function(q) marginal_cost(cst, q / n)
   flat <- function(v) function(q) rep(v, length(q))
 
+  first_degree <- identical(outcome$structure, "first-degree discrimination")
+
   layers <- list()
-  if ("cs" %in% shade && Q > 0) {
-    layers <- c(layers, area(0, Q, function(q) price_at(d, q), flat(P), "cs",
-                             "Consumer surplus", Q * 0.35))
-  }
-  if ("ps" %in% shade && Q > 0) {
-    layers <- c(layers, area(0, Q, flat(P), mc_line, "ps", "Producer surplus", Q * 0.35))
-  }
-  if ("dwl" %in% shade && Q_eff > Q * (1 + 1e-6)) {
-    layers <- c(layers, area(Q, Q_eff, function(q) price_at(d, q), mc_line, "dwl",
-                             "Deadweight\nloss", (Q + Q_eff) / 2))
+  if (first_degree) {
+    # Every unit sells at willingness to pay: the whole area between demand
+    # and marginal cost is the seller's, and there is nothing else to shade.
+    if ("ps" %in% shade && Q > 0) {
+      layers <- c(layers, area(0, Q, function(q) price_at(d, q), mc_line, "ps",
+                               "Producer surplus\n(all of it)", Q * 0.35))
+    }
+  } else {
+    if ("cs" %in% shade && Q > 0) {
+      layers <- c(layers, area(0, Q, function(q) price_at(d, q), flat(P), "cs",
+                               "Consumer surplus", Q * 0.35))
+    }
+    if ("ps" %in% shade && Q > 0) {
+      layers <- c(layers, area(0, Q, flat(P), mc_line, "ps", "Producer surplus", Q * 0.35))
+    }
+    if ("dwl" %in% shade && Q_eff > Q * (1 + 1e-6)) {
+      layers <- c(layers, area(Q, Q_eff, function(q) price_at(d, q), mc_line, "dwl",
+                               "Deadweight\nloss", (Q + Q_eff) / 2))
+    }
   }
 
   if (is.null(title)) {
     title <- switch(outcome$structure,
-      monopoly = "Monopoly",
-      cournot = sprintf("Cournot oligopoly, %s firms", format(n)),
-      competition = sprintf("Perfect competition, %s firms", format(n)),
-      "Perfect competition, long run"
+      "monopoly" = "Monopoly",
+      "cournot" = sprintf("Cournot oligopoly, %s firms", format(n)),
+      "competition" = sprintf("Perfect competition, %s firms", format(n)),
+      "competition (long run)" = "Perfect competition, long run",
+      "first-degree discrimination" = "First-degree price discrimination",
+      cli::cli_abort("Unknown market structure {.val {outcome$structure}}.")
     )
   }
   if (is.null(subtitle)) {

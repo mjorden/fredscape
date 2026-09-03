@@ -123,12 +123,24 @@ indifference_curve.ces <- function(u, level, x, ...) {
 optimal_bundle.ces <- function(u, b, ...) {
   alpha <- attr(u, "alpha")
   sigma <- attr(u, "sigma")
+  if (!is.finite(sigma)) {
+    # rho = 1: perfect substitutes. The tangency formula degenerates
+    # (k = ratio^Inf, then Inf * 0), so use the corner logic directly.
+    return(optimal_bundle(as_perfect_substitutes(u), b))
+  }
   # Tangency MRS = px / py gives the ratio y / x in closed form; the budget
   # then pins the level.
   k <- ((b$px * (1 - alpha)) / (b$py * alpha))^sigma
   x <- b$income / (b$px + b$py * k)
   y <- k * x
   data.frame(x = x, y = y, utility = u(x, y))
+}
+
+#' The perfect-substitutes function a CES with rho = 1 is
+#' @noRd
+as_perfect_substitutes <- function(u) {
+  perfect_substitutes(a = attr(u, "alpha"), b = 1 - attr(u, "alpha"),
+                      A = attr(u, "A"), kind = attr(u, "kind"))
 }
 
 #' @rdname mrs

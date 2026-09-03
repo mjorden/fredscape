@@ -1,3 +1,42 @@
+# fredscape 0.8.0
+
+Price discrimination (#15):
+
+* `first_degree()` -- perfect discrimination: the efficient quantity, zero
+  deadweight loss, all surplus to the seller. Returns a `market_outcome`.
+* `third_degree()` -- segmented markets with one marginal cost,
+  `MR_i = MC(sum Q_i)`; per-segment price, quantity, elasticity and Lerner
+  index, plus the uniform-price benchmark from `aggregate_demand()`, the
+  horizontal sum of the segments' demands.
+* `two_part_tariff()` -- fee plus per-unit price. Identical consumers give
+  price at marginal cost and the fee equal to surplus; with several types
+  every serve-this-type-and-above cut-off is evaluated, so the result says
+  who is served and why the price sits above marginal cost when everyone is.
+* `plot_two_part_tariff()` shades the fee as surplus above the unit price.
+* `market_outcome` accounting now accepts explicit price and surplus values
+  for sellers with no single price.
+
+Fixes from the pre-merge code review:
+
+* `ces(rho = 1)` now behaves as the perfect-substitutes case it is:
+  `optimal_bundle()` no longer returns `NaN` when `y` wins the corner and
+  `expenditure()` no longer collapses to the level itself (its price index
+  degenerated at `sigma = Inf`).
+* `third_degree()` brackets the common marginal-revenue level with the same
+  grid scan as the other structures; with falling marginal cost it used to
+  assume monotonicity and report zero output.
+* `expenditure()` gains a `quasilinear` method, so every constructor has a
+  dedicated method rather than the generic root-find.
+* A partially named list of demands (`list(students = s, d)`) now names the
+  blanks instead of leaving `""`, which broke `plot_two_part_tariff()`;
+  duplicated names are rejected.
+* `quantity_at()` on an `aggregate_demand()` result uses the summed
+  quantities directly instead of running a root-find inside a root-find.
+* `plot_market()` titles and shades first-degree discrimination correctly
+  (it fell through to the long-run competition title) and aborts on an
+  unknown structure.
+
+
 # fredscape 0.7.0
 
 Market structure (#13): the demand side, and the equilibria that put it

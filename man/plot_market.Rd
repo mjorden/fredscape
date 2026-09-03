@@ -15,8 +15,10 @@ plot_market(
 )
 }
 \arguments{
-\item{outcome}{A \code{market_outcome} from \code{\link[=monopoly]{monopoly()}}, \code{\link[=cournot]{cournot()}} or
-\code{\link[=perfect_competition]{perfect_competition()}}.}
+\item{outcome}{A \code{market_outcome} from \code{\link[=monopoly]{monopoly()}}, \code{\link[=cournot]{cournot()}},
+\code{\link[=perfect_competition]{perfect_competition()}} or \code{\link[=first_degree]{first_degree()}}. For first-degree
+discrimination the whole area between demand and marginal cost is
+shaded as producer surplus, since that is who gets it.}
 
 \item{q_max}{Right-hand limit of the quantity axis. Defaults to the
 demand curve's \code{q_max}.}

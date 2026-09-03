@@ -150,3 +150,23 @@ test_that("plot_price_change() omits a bracket for a zero-length effect", {
   n_text <- sum(vapply(p$layers, function(ly) inherits(ly$geom, "GeomText"), logical(1)))
   expect_identical(n_text, 2L)   # A/B/C labels + one bracket label
 })
+
+## Review follow-ups ---------------------------------------------------------
+
+test_that("expenditure() has a quasi-linear method that matches the numeric default", {
+  q <- quasilinear(log, f_prime = function(x) 1 / x)
+  strip <- function(x, y) q(x, y)
+  lv <- c(0.5, 2, 5)
+  expect_equal(expenditure(q, 2, 5, lv), expenditure(strip, 2, 5, lv), tolerance = 1e-6)
+  # Interior case: x* = py / px = 2.5, y = level - log(2.5).
+  expect_equal(expenditure(q, 2, 5, 5), 2 * 2.5 + 5 * (5 - log(2.5)))
+  # Level below f(x*): only x is bought, x = exp(level).
+  expect_equal(expenditure(q, 2, 5, 0.5), 2 * exp(0.5))
+  # It inverts the indirect utility, like every other method.
+  b <- budget(120, 3, 4)
+  expect_equal(expenditure(q, b$px, b$py, optimal_bundle(q, b)$utility), b$income, tolerance = 1e-8)
+  # Every constructor now has a dedicated method.
+  for (f in list(cobb_douglas(0.3), ces(-1, 0.4), leontief(1, 2), perfect_substitutes(1, 2), q)) {
+    expect_false(identical(utils::getS3method("expenditure", class(f)[1], optional = TRUE), NULL))
+  }
+})

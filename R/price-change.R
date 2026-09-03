@@ -3,9 +3,12 @@
 #' The least income needed to reach a given utility (or, for a production
 #' function, the least outlay needed to produce a given output) at the stated
 #' prices. This is the object behind Hicksian compensation and behind the
-#' total-cost curve, so the package's constructors carry closed forms; any
-#' other function is solved by finding the income at which
-#' [optimal_bundle()] just reaches `level`, using [stats::uniroot()].
+#' total-cost curve, so every constructor has a dedicated method: closed
+#' forms for Cobb-Douglas, CES, Leontief and perfect substitutes, and for
+#' quasi-linear utility a single root-find for the first-order condition
+#' followed by the closed form. Any other function is solved by finding the
+#' income at which [optimal_bundle()] just reaches `level`, using
+#' [stats::uniroot()].
 #'
 #' @param u A function of `x` and `y`.
 #' @param px,py Prices.
@@ -53,6 +56,10 @@ expenditure.ces <- function(u, px, py, level, ...) {
   alpha <- attr(u, "alpha")
   sigma <- attr(u, "sigma")
   A <- attr(u, "A")
+  if (!is.finite(sigma)) {
+    # rho = 1: perfect substitutes; the price index below collapses to 0^0.
+    return(expenditure(as_perfect_substitutes(u), px, py, level))
+  }
   price_index <- if (sigma == 1) {
     # Unreachable for a constructed ces() (rho = 0 is refused), kept for safety.
     px^alpha * py^(1 - alpha)
@@ -60,6 +67,36 @@ expenditure.ces <- function(u, px, py, level, ...) {
     (alpha^sigma * px^(1 - sigma) + (1 - alpha)^sigma * py^(1 - sigma))^(1 / (1 - sigma))
   }
   pmax(level, 0) / A * price_index
+}
+
+#' @rdname expenditure
+#' @export
+expenditure.quasilinear <- function(u, px, py, level, ...) {
+  f <- attr(u, "f")
+  f_prime <- attr(u, "f_prime")
+  target <- px / py
+  # Cheapest way to reach a level: buy x up to where f'(x) = px / py (the
+  # same first-order condition as demand), then top up with y. If the level
+  # is reached before that point, buy only x.
+  g <- function(x) f_prime(x) - target
+  hi <- 1
+  for (i in seq_len(200L)) {
+    if (g(hi) <= 0) break
+    hi <- hi * 2
+  }
+  x_star <- if (g(1e-12) <= 0) 0 else stats::uniroot(g, c(1e-12, hi), tol = 1e-10)$root
+  f_star <- f(x_star)
+
+  vapply(level, function(lv) {
+    y <- lv - f_star
+    if (is.finite(y) && y >= 0) {
+      return(px * x_star + py * y)
+    }
+    # Only x: the smallest x with f(x) = level.
+    if (x_star <= 0) return(0)
+    x <- stats::uniroot(function(x) f(x) - lv, c(1e-12, x_star), tol = 1e-10)$root
+    px * x
+  }, numeric(1))
 }
 
 #' @rdname expenditure

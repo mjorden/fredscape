@@ -174,9 +174,9 @@ plot_price_change(u, b, new_px = 6)
 ```
 
 Hicks compensation holds utility fixed; Slutsky holds purchasing power fixed.
-Both rest on `expenditure()`, the expenditure function, which has closed forms
-for every constructor and doubles as the total-cost function on the producer
-side.
+Both rest on `expenditure()`, the expenditure function, which has a dedicated
+method for every constructor and doubles as the total-cost function on the
+producer side.
 
 <img src="man/figures/README-price-change.png" width="80%" alt="Hicks decomposition of a price rise: two budget lines, a dashed compensated line, three bundles, and bracketed substitution and income effects" />
 
@@ -214,6 +214,26 @@ areas shaded. Costs can also come straight from a production function via
 `production_cost()`, and any decreasing `function(q)` works as demand.
 
 <img src="man/figures/README-monopoly.png" width="80%" alt="A monopoly outcome: demand, marginal revenue and marginal cost, with consumer surplus, producer surplus and the deadweight-loss triangle shaded" />
+
+A monopolist with more than one price:
+
+```r
+first_degree(d, cst)                                  # every unit at willingness to pay
+third_degree(list(students = linear_demand(60, 0.5),  # segment by elasticity
+                  others   = d), cst)
+two_part_tariff(d, cst)                               # fee = surplus, price = MC
+two_part_tariff(list(light = linear_demand(60, 1),    # who to serve, and at what price
+                     heavy = d), cst, n = c(5, 1))
+```
+
+`third_degree()` carries the uniform-price benchmark (via `aggregate_demand()`,
+the horizontal sum), so the gain from segmenting is explicit and the
+inverse-elasticity rule holds segment by segment. `two_part_tariff()` weighs
+serving everyone — fee pinned to the lightest user, unit price above marginal
+cost — against excluding the light users and taking the heavy users' whole
+surplus.
+
+<img src="man/figures/README-tariff.png" width="80%" alt="A two-part tariff: a light user's demand curve, the unit price above marginal cost, and the fee shaded as the surplus above the price" />
 
 ## The palette
 
@@ -259,6 +279,8 @@ scale_fill_econ_c("redblue") # continuous, diverging
 | `linear_demand()` / `demand_fn()` / `quadratic_cost()` / `production_cost()` | Market demand and firm cost objects, with `price_at()`, `marginal_revenue()`, `elasticity()`, `marginal_cost()` and friends |
 | `monopoly()` / `cournot()` / `perfect_competition()` / `compare_structures()` | Market equilibria with surplus, deadweight loss and the Lerner index |
 | `plot_market()` | Demand, MR, MC and the shaded welfare areas |
+| `first_degree()` / `third_degree()` / `two_part_tariff()` / `aggregate_demand()` | Price discrimination, with the uniform-price benchmark |
+| `plot_two_part_tariff()` | The fee as shaded surplus above the unit price |
 | `geom_indifference()` / `geom_budget()` / `geom_optimum()` / `geom_demand()` / `geom_engel()` / `geom_consumption_path()` | The pieces as ggplot layers |
 | `plot_consumer_choice()` | The textbook diagram in one call |
 
@@ -292,7 +314,7 @@ that reports its length, not its value.
 Rscript -e 'devtools::test()'
 ```
 
-179 tests, no network required. The API parsers run against saved payloads in
+The full suite runs with no network. The API parsers run against saved payloads in
 `tests/testthat/fixtures/`; the argument validators are checked to fire before
 any request is built; the recession logic is round-tripped through a
 reconstructed `USREC` indicator.
