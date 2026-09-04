@@ -1,3 +1,24 @@
+# fredscape 0.9.0
+
+Econometrics (#21): estimating things from the series you fetched, in base R
+and stats only.
+
+* `ols()` -- `lm()` with `"classical"`, `"hc1"` (heteroskedasticity-robust)
+  or `"hac"` (Newey-West) standard errors, computed directly and tested
+  against hand-built sandwich matrices. `coef_table()` for the tidy table,
+  `coef()` / `vcov()` / `nobs()` / `residuals()` / `fitted()` methods, and
+  `plot_coefficients()` for the dot-and-whisker chart.
+* `hp_filter()` (Hodrick-Prescott, lambda by frequency or explicit) and
+  `hamilton_filter()` (Hamilton 2018) trend-cycle decompositions, returning
+  one `trend_cycle` shape; `plot_trend_cycle()` draws both panels with NBER
+  shading.
+* `adf_test()` -- augmented Dickey-Fuller with MacKinnon (2010)
+  response-surface critical values and AIC lag selection over a common
+  sample.
+* `transform_series()` -- the FRED `units` transformations (`chg`, `ch1`,
+  `pch`, `pc1`, `pca`, `cch`, `cca`, `log`, plus `index`) applied locally to
+  a tidy frame, with the frequency inferred from the dates.
+
 # fredscape 0.8.1
 
 Housekeeping from the code review (#19). No user-facing behaviour changes.

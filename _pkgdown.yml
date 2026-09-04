@@ -73,6 +73,17 @@ reference:
   - price_discrimination
   - two_part_tariff
 
+- title: Econometrics
+  desc: Estimation and time-series tools for the series you fetched.
+  contents:
+  - ols
+  - coef_table
+  - plot_coefficients
+  - trend_cycle
+  - plot_trend_cycle
+  - adf_test
+  - transform_series
+
 - title: Diagrams
   desc: Textbook figures in the house style, and the layers to build your own.
   contents:

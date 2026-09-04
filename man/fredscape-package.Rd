@@ -11,6 +11,7 @@ A small, dependency-light client for the Federal Reserve Bank of St. Louis FRED 
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://mjorden.github.io/fredscape/}
   \item \url{https://github.com/mjorden/fredscape}
   \item Report bugs at \url{https://github.com/mjorden/fredscape/issues}
 }

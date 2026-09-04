@@ -188,3 +188,26 @@ p_tariff <- plot_two_part_tariff(
   source = "fredscape"
 )
 save_fig(econ_masthead(p_tariff), "README-tariff", width = 7, height = 4.8)
+
+## 11. Trend and cycle -----------------------------------------------------------------
+
+unrate <- data.frame(date = economics$date, value = 100 * economics$unemploy / economics$pop)
+p_hp <- plot_trend_cycle(
+  hp_filter(unrate, frequency = "monthly"),
+  title = "The cycle in unemployment",
+  subtitle = "United States, unemployed as % of population; Hodrick-Prescott trend, lambda = 14,400",
+  source = "FRED, Federal Reserve Bank of St Louis"
+)
+save_fig(econ_masthead(p_hp), "README-hp", width = 8, height = 5.6)
+
+## 12. Coefficients ---------------------------------------------------------------------
+
+economics$unemp_rate <- 100 * economics$unemploy / economics$pop
+fit <- ols(psavert ~ unemp_rate + uempmed, economics, se = "hac")
+p_coef <- plot_coefficients(
+  fit,
+  title = "What moves the saving rate",
+  subtitle = "Personal saving rate on unemployment and its median duration; Newey-West 95% intervals",
+  source = "FRED, Federal Reserve Bank of St Louis"
+)
+save_fig(econ_masthead(p_coef), "README-coef", width = 7, height = 3.6)
