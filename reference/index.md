@@ -133,6 +133,34 @@ Demand and cost objects, equilibria, and price discrimination.
 - [`two_part_tariff()`](https://mjorden.github.io/fredscape/reference/two_part_tariff.md)
   : Two-part tariffs
 
+## Econometrics
+
+Estimation and time-series tools for the series you fetched.
+
+- [`ols()`](https://mjorden.github.io/fredscape/reference/ols.md) :
+  Ordinary least squares with robust standard errors
+
+- [`coef_table()`](https://mjorden.github.io/fredscape/reference/coef_table.md)
+  :
+
+  Coefficient table for an `econ_fit`
+
+- [`plot_coefficients()`](https://mjorden.github.io/fredscape/reference/plot_coefficients.md)
+  : Draw a coefficient table
+
+- [`hp_filter()`](https://mjorden.github.io/fredscape/reference/trend_cycle.md)
+  [`hamilton_filter()`](https://mjorden.github.io/fredscape/reference/trend_cycle.md)
+  : Trend-cycle decompositions
+
+- [`plot_trend_cycle()`](https://mjorden.github.io/fredscape/reference/plot_trend_cycle.md)
+  : Draw a trend-cycle decomposition
+
+- [`adf_test()`](https://mjorden.github.io/fredscape/reference/adf_test.md)
+  : Augmented Dickey-Fuller test for a unit root
+
+- [`transform_series()`](https://mjorden.github.io/fredscape/reference/transform_series.md)
+  : Transform a tidy series the way FRED does
+
 ## Diagrams
 
 Textbook figures in the house style, and the layers to build your own.

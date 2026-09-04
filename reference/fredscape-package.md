@@ -12,6 +12,8 @@ theming.
 
 Useful links:
 
+- <https://mjorden.github.io/fredscape/>
+
 - <https://github.com/mjorden/fredscape>
 
 - Report bugs at <https://github.com/mjorden/fredscape/issues>

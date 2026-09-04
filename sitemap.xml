@@ -5,12 +5,14 @@
 <url><loc>https://mjorden.github.io/fredscape/authors.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/index.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/news/index.html</loc></url>
+<url><loc>https://mjorden.github.io/fredscape/reference/adf_test.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/aggregate_demand.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/annotate_recessions.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/budget.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/budget_line.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/ces.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/cobb_douglas.html</loc></url>
+<url><loc>https://mjorden.github.io/fredscape/reference/coef_table.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/compare_structures.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/cost.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/cost_values.html</loc></url>
@@ -37,13 +39,16 @@
 <url><loc>https://mjorden.github.io/fredscape/reference/market_structure.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/mrs.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/nber_recessions.html</loc></url>
+<url><loc>https://mjorden.github.io/fredscape/reference/ols.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/optimal_bundle.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/perfect_substitutes.html</loc></url>
+<url><loc>https://mjorden.github.io/fredscape/reference/plot_coefficients.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/plot_consumer_choice.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/plot_cost_curves.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/plot_market.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/plot_price_change.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/plot_producer_choice.html</loc></url>
+<url><loc>https://mjorden.github.io/fredscape/reference/plot_trend_cycle.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/plot_two_part_tariff.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/price_change.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/price_discrimination.html</loc></url>
@@ -53,6 +58,8 @@
 <url><loc>https://mjorden.github.io/fredscape/reference/scale_econ.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/scale_econ_axis.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/theme_econ.html</loc></url>
+<url><loc>https://mjorden.github.io/fredscape/reference/transform_series.html</loc></url>
+<url><loc>https://mjorden.github.io/fredscape/reference/trend_cycle.html</loc></url>
 <url><loc>https://mjorden.github.io/fredscape/reference/two_part_tariff.html</loc></url>
 </urlset>
 

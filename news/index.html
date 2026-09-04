@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fredscape</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,6 +30,18 @@
       <small>Source: <a href="https://github.com/mjorden/fredscape/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.9.0" id="fredscape-090">fredscape 0.9.0<a class="anchor" aria-label="anchor" href="#fredscape-090"></a></h2>
+<p>Econometrics (<a href="https://github.com/mjorden/fredscape/issues/21" class="external-link">#21</a>): estimating things from the series you fetched, in base R and stats only.</p>
+<ul><li>
+<code><a href="../reference/ols.html">ols()</a></code> – <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> with <code>"classical"</code>, <code>"hc1"</code> (heteroskedasticity-robust) or <code>"hac"</code> (Newey-West) standard errors, computed directly and tested against hand-built sandwich matrices. <code><a href="../reference/coef_table.html">coef_table()</a></code> for the tidy table, <code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef()</a></code> / <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code> / <code><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs()</a></code> / <code><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals()</a></code> / <code><a href="https://rdrr.io/r/stats/fitted.values.html" class="external-link">fitted()</a></code> methods, and <code><a href="../reference/plot_coefficients.html">plot_coefficients()</a></code> for the dot-and-whisker chart.</li>
+<li>
+<code><a href="../reference/trend_cycle.html">hp_filter()</a></code> (Hodrick-Prescott, lambda by frequency or explicit) and <code><a href="../reference/trend_cycle.html">hamilton_filter()</a></code> (Hamilton 2018) trend-cycle decompositions, returning one <code>trend_cycle</code> shape; <code><a href="../reference/plot_trend_cycle.html">plot_trend_cycle()</a></code> draws both panels with NBER shading.</li>
+<li>
+<code><a href="../reference/adf_test.html">adf_test()</a></code> – augmented Dickey-Fuller with MacKinnon (2010) response-surface critical values and AIC lag selection over a common sample.</li>
+<li>
+<code><a href="../reference/transform_series.html">transform_series()</a></code> – the FRED <code>units</code> transformations (<code>chg</code>, <code>ch1</code>, <code>pch</code>, <code>pc1</code>, <code>pca</code>, <code>cch</code>, <code>cca</code>, <code>log</code>, plus <code>index</code>) applied locally to a tidy frame, with the frequency inferred from the dates.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.8.1" id="fredscape-081">fredscape 0.8.1<a class="anchor" aria-label="anchor" href="#fredscape-081"></a></h2>
 <p>Housekeeping from the code review (<a href="https://github.com/mjorden/fredscape/issues/19" class="external-link">#19</a>). No user-facing behaviour changes.</p>

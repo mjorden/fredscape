@@ -110,6 +110,41 @@ returns titles, units, frequency and coverage for the matches.
 ![Three indexed US economic series in the Economist categorical
 palette](reference/figures/README-index.png)
 
+## Estimating things
+
+Once a series is in a data frame, the usual first questions have answers
+in the same house style. All of it is base R and `stats` — the robust
+covariance matrices are a dozen lines of linear algebra each, and the
+tests pin them against sandwich matrices built by hand.
+
+``` r
+
+econ <- ggplot2::economics                     # five FRED series, bundled
+econ$unemp_rate <- 100 * econ$unemploy / econ$pop
+
+fit <- ols(psavert ~ unemp_rate + uempmed, econ, se = "hac")   # Newey-West
+fit
+#> <OLS: psavert ~ unemp_rate + uempmed>
+#>   574 observations; Newey-West HAC, 5 lags standard errors
+#>             estimate std_error     t       p
+#> (Intercept)     7.81      1.14  6.88 1.5e-11 ***
+#> unemp_rate      1.51     0.391  3.85 0.00013 ***
+#> uempmed       -0.436    0.0638 -6.84   2e-11 ***
+
+plot_coefficients(fit)
+
+adf_test(econ$unemp_rate)                      # unit root? MacKinnon critical values
+hp_filter(u, frequency = "monthly")            # or hamilton_filter(u, h = 24, p = 12)
+transform_series(cpi, "pc1")                   # FRED's units codes, applied locally
+```
+
+![Two panels: the US unemployment rate with its Hodrick-Prescott trend,
+and the cycle around zero, with recessions
+shaded](reference/figures/README-hp.png)
+
+![Dot-and-whisker plot of two regression coefficients with Newey-West
+confidence intervals](reference/figures/README-coef.png)
+
 ## Theory, not just data
 
 The same style works for the textbook diagrams.
@@ -323,6 +358,10 @@ scale_fill_econ_c("redblue") # continuous, diverging
 | [`annotate_recessions()`](https://mjorden.github.io/fredscape/reference/annotate_recessions.md) | Recession bands behind the data |
 | [`econ_masthead()`](https://mjorden.github.io/fredscape/reference/econ_masthead.md) | The red block above the title |
 | `nber_recessions` | Every NBER-dated US contraction since 1857 |
+| [`ols()`](https://mjorden.github.io/fredscape/reference/ols.md) / [`coef_table()`](https://mjorden.github.io/fredscape/reference/coef_table.md) / [`plot_coefficients()`](https://mjorden.github.io/fredscape/reference/plot_coefficients.md) | Regression with classical, HC1 or Newey-West standard errors |
+| [`hp_filter()`](https://mjorden.github.io/fredscape/reference/trend_cycle.md) / [`hamilton_filter()`](https://mjorden.github.io/fredscape/reference/trend_cycle.md) / [`plot_trend_cycle()`](https://mjorden.github.io/fredscape/reference/plot_trend_cycle.md) | Trend-cycle decompositions |
+| [`adf_test()`](https://mjorden.github.io/fredscape/reference/adf_test.md) | Augmented Dickey-Fuller with MacKinnon critical values |
+| [`transform_series()`](https://mjorden.github.io/fredscape/reference/transform_series.md) | FRED’s `units` transformations, applied locally |
 | [`cobb_douglas()`](https://mjorden.github.io/fredscape/reference/cobb_douglas.md) / [`ces()`](https://mjorden.github.io/fredscape/reference/ces.md) / [`leontief()`](https://mjorden.github.io/fredscape/reference/leontief.md) / [`perfect_substitutes()`](https://mjorden.github.io/fredscape/reference/perfect_substitutes.md) / [`quasilinear()`](https://mjorden.github.io/fredscape/reference/quasilinear.md) | Utility or production functions that carry their parameters |
 | [`budget()`](https://mjorden.github.io/fredscape/reference/budget.md) | A budget or isocost constraint |
 | [`indifference_curve()`](https://mjorden.github.io/fredscape/reference/indifference_curve.md) / [`optimal_bundle()`](https://mjorden.github.io/fredscape/reference/optimal_bundle.md) / [`mrs()`](https://mjorden.github.io/fredscape/reference/mrs.md) | Contours, the chosen bundle, marginal rate of substitution — closed form for Cobb-Douglas, numeric for anything else |
