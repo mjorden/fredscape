@@ -157,8 +157,5 @@ plot_market <- function(outcome, q_max = NULL, shade = c("cs", "ps", "dwl"),
     labs_econ(title = title, subtitle = subtitle, source = source) +
     ggplot2::labs(x = "Quantity", y = "Price") +
     theme_econ(panel = panel, grid = "both") +
-    ggplot2::theme(
-      axis.line.y = ggplot2::element_line(colour = econ_surface(panel)$axis, linewidth = 0.5),
-      axis.title = ggplot2::element_text(hjust = 1)
-    )
+    econ_axes(panel)
 }

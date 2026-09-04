@@ -1,3 +1,19 @@
+# fredscape 0.8.1
+
+Housekeeping from the code review (#19). No user-facing behaviour changes.
+
+* `scales` and `knitr` dropped from Suggests: nothing used them.
+* The private `%||%` is gone; `rlang`'s is imported instead.
+* One `fmt_num()` behind every `print()` method and one `econ_axes()` behind
+  every two-axis diagram, replacing four copies of each.
+* The `grid_<panel>` palette entries are documented as the gridline colour
+  *for* that panel (they looked swapped; they are not), and the `geom_*()`
+  return convention -- one layer for one thing, a list for several -- is
+  written down once.
+* A pkgdown configuration and deploy workflow; the site builds from the
+  existing reference documentation. The committed `adversarial-review-log/`
+  is explained in the README as the review trail it is.
+
 # fredscape 0.8.0
 
 Price discrimination (#15):

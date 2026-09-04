@@ -60,7 +60,12 @@ dashed.}
 }
 \value{
 A ggplot2 layer, or a list of layers, that can be added to a plot
-with \code{+}.
+with \code{+}. The convention throughout the package: a \verb{geom_*()} returns a
+single layer when it draws one thing (\code{geom_budget()}, \code{geom_demand()},
+\code{geom_engel()}) and a list when it draws several that belong together
+(\code{geom_optimum()}'s point and drop lines, \code{geom_consumption_path()}'s
+path and points, \code{geom_indifference()}'s path and the vertical arm of a
+Leontief L). Both add with \code{+} identically.
 }
 \description{
 Layers that put \code{\link[=indifference_curve]{indifference_curve()}}, \code{\link[=budget]{budget()}} and \code{\link[=optimal_bundle]{optimal_bundle()}}

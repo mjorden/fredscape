@@ -88,9 +88,6 @@ drop_null <- function(x) {
   x[!vapply(x, is.null, logical(1))]
 }
 
-#' @noRd
-`%||%` <- function(x, y) if (is.null(x)) y else x
-
 #' Coerce a date-ish argument to the `YYYY-MM-DD` string FRED expects
 #'
 #' @param x A `Date`, something [as.Date()] accepts, or `NULL`.

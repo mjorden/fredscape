@@ -19,7 +19,9 @@ econ_hex <- c(
   purple  = "#9A607F",
   tan     = "#D1B07C",
 
-  # Structural
+  # Structural. The grid_<panel> entries are the gridline colour used ON that
+  # panel, not a grid that is that colour: white lines on the blue panel,
+  # blue-grey lines on the white one. They are not swapped.
   red         = "#E3120B",
   panel_blue  = "#D5E4EB",
   panel_dark  = "#1C2B36",

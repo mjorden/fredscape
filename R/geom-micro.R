@@ -48,7 +48,12 @@ curve_grid <- function(xlim, n) {
 #' @param ... Passed to the underlying geom.
 #'
 #' @return A ggplot2 layer, or a list of layers, that can be added to a plot
-#'   with `+`.
+#'   with `+`. The convention throughout the package: a `geom_*()` returns a
+#'   single layer when it draws one thing (`geom_budget()`, `geom_demand()`,
+#'   `geom_engel()`) and a list when it draws several that belong together
+#'   (`geom_optimum()`'s point and drop lines, `geom_consumption_path()`'s
+#'   path and points, `geom_indifference()`'s path and the vertical arm of a
+#'   Leontief L). Both add with `+` identically.
 #'
 #' @seealso [plot_consumer_choice()] for the whole chart in one call.
 #'
@@ -240,12 +245,7 @@ plot_consumer_choice <- function(u, b,
     labs_econ(title = title, subtitle = subtitle, source = source) +
     ggplot2::labs(x = goods[1], y = goods[2]) +
     theme_econ(panel = panel, grid = "both") +
-    ggplot2::theme(
-      axis.line.y = ggplot2::element_line(
-        colour = econ_surface(panel)$axis, linewidth = 0.5
-      ),
-      axis.title = ggplot2::element_text(hjust = 1)
-    ) +
+    econ_axes(panel) +
     ggplot2::annotate(
       "text", x = xlim[2], y = ylim[2], label = curve_name,
       hjust = 1.05, vjust = 1.5, size = 3.2,
