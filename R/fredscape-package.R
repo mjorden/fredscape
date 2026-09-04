@@ -3,6 +3,7 @@
 
 ## usethis namespace: start
 #' @importFrom rlang .data %||%
+#' @importFrom stats coef fitted nobs residuals vcov
 ## usethis namespace: end
 NULL
 

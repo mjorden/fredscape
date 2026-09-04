@@ -94,6 +94,37 @@ returns titles, units, frequency and coverage for the matches.
 
 <img src="man/figures/README-index.png" width="100%" alt="Three indexed US economic series in the Economist categorical palette" />
 
+## Estimating things
+
+Once a series is in a data frame, the usual first questions have answers in
+the same house style. All of it is base R and `stats` — the robust
+covariance matrices are a dozen lines of linear algebra each, and the tests
+pin them against sandwich matrices built by hand.
+
+```r
+econ <- ggplot2::economics                     # five FRED series, bundled
+econ$unemp_rate <- 100 * econ$unemploy / econ$pop
+
+fit <- ols(psavert ~ unemp_rate + uempmed, econ, se = "hac")   # Newey-West
+fit
+#> <OLS: psavert ~ unemp_rate + uempmed>
+#>   574 observations; Newey-West HAC, 5 lags standard errors
+#>             estimate std_error     t       p
+#> (Intercept)     7.81      1.14  6.88 1.5e-11 ***
+#> unemp_rate      1.51     0.391  3.85 0.00013 ***
+#> uempmed       -0.436    0.0638 -6.84   2e-11 ***
+
+plot_coefficients(fit)
+
+adf_test(econ$unemp_rate)                      # unit root? MacKinnon critical values
+hp_filter(u, frequency = "monthly")            # or hamilton_filter(u, h = 24, p = 12)
+transform_series(cpi, "pc1")                   # FRED's units codes, applied locally
+```
+
+<img src="man/figures/README-hp.png" width="100%" alt="Two panels: the US unemployment rate with its Hodrick-Prescott trend, and the cycle around zero, with recessions shaded" />
+
+<img src="man/figures/README-coef.png" width="80%" alt="Dot-and-whisker plot of two regression coefficients with Newey-West confidence intervals" />
+
 ## Theory, not just data
 
 The same style works for the textbook diagrams. `cobb_douglas()` builds a
@@ -268,6 +299,10 @@ scale_fill_econ_c("redblue") # continuous, diverging
 | `annotate_recessions()` | Recession bands behind the data |
 | `econ_masthead()` | The red block above the title |
 | `nber_recessions` | Every NBER-dated US contraction since 1857 |
+| `ols()` / `coef_table()` / `plot_coefficients()` | Regression with classical, HC1 or Newey-West standard errors |
+| `hp_filter()` / `hamilton_filter()` / `plot_trend_cycle()` | Trend-cycle decompositions |
+| `adf_test()` | Augmented Dickey-Fuller with MacKinnon critical values |
+| `transform_series()` | FRED's `units` transformations, applied locally |
 | `cobb_douglas()` / `ces()` / `leontief()` / `perfect_substitutes()` / `quasilinear()` | Utility or production functions that carry their parameters |
 | `budget()` | A budget or isocost constraint |
 | `indifference_curve()` / `optimal_bundle()` / `mrs()` | Contours, the chosen bundle, marginal rate of substitution — closed form for Cobb-Douglas, numeric for anything else |
