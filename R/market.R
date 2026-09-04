@@ -599,7 +599,7 @@ perfect_competition <- function(demand, cost, n = NULL) {
 
 #' @export
 print.market_outcome <- function(x, ...) {
-  fmt <- function(v) format(signif(v, 4), trim = TRUE)
+  fmt <- fmt_num
   cat(sprintf("<Market outcome: %s, %s firm%s>\n", x$structure, fmt(x$n),
               if (isTRUE(all.equal(x$n, 1))) "" else "s"))
   cat(sprintf("  price %s, quantity %s (%s per firm), profit per firm %s\n",

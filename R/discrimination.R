@@ -173,7 +173,7 @@ third_degree <- function(demands, cost) {
 
 #' @export
 print.third_degree <- function(x, ...) {
-  fmt <- function(v) format(signif(v, 4), trim = TRUE)
+  fmt <- fmt_num
   cat("<Third-degree price discrimination>\n")
   s <- x$segments
   for (i in seq_len(nrow(s))) {
@@ -307,7 +307,7 @@ two_part_tariff <- function(demands, cost, n = 1) {
 
 #' @export
 print.two_part_tariff <- function(x, ...) {
-  fmt <- function(v) format(signif(v, 4), trim = TRUE)
+  fmt <- fmt_num
   cat(sprintf("<Two-part tariff>\n  fee %s, price per unit %s (marginal cost %s)\n",
               fmt(x$fee), fmt(x$price), fmt(x$marginal_cost)))
   t <- x$types
@@ -398,8 +398,5 @@ plot_two_part_tariff <- function(tariff, type = NULL,
     labs_econ(title = title, subtitle = subtitle, source = source) +
     ggplot2::labs(x = sprintf("Quantity per %s consumer", type), y = "Price") +
     theme_econ(panel = panel, grid = "both") +
-    ggplot2::theme(
-      axis.line.y = ggplot2::element_line(colour = econ_surface(panel)$axis, linewidth = 0.5),
-      axis.title = ggplot2::element_text(hjust = 1)
-    )
+    econ_axes(panel)
 }

@@ -1,0 +1,91 @@
+url: https://mjorden.github.io/fredscape/
+
+template:
+  bootstrap: 5
+  bslib:
+    primary: "#006BA2"
+    base_font: {google: "Source Sans 3"}
+    heading_font: {google: "Source Serif 4"}
+
+navbar:
+  structure:
+    left: [reference, news]
+    right: [github]
+
+reference:
+- title: FRED data
+  desc: A small client that returns tidy data frames.
+  contents:
+  - fred_series
+  - fred_series_info
+  - fred_search
+  - fred_recessions
+  - fred_key
+
+- title: The Economist style
+  desc: Theme, palettes, labels and the red masthead block.
+  contents:
+  - theme_econ
+  - scale_econ
+  - scale_econ_axis
+  - labs_econ
+  - econ_masthead
+  - print.econ_plot
+  - econ_colours
+  - econ_pal
+  - annotate_recessions
+  - nber_recessions
+
+- title: Preferences and technology
+  desc: Utility and production functions that carry their parameters.
+  contents:
+  - cobb_douglas
+  - ces
+  - leontief
+  - perfect_substitutes
+  - quasilinear
+
+- title: Consumer theory
+  contents:
+  - budget
+  - budget_line
+  - indifference_curve
+  - optimal_bundle
+  - mrs
+  - expenditure
+  - derived_curves
+  - price_change
+
+- title: Producer theory
+  contents:
+  - producer
+
+- title: Markets
+  desc: Demand and cost objects, equilibria, and price discrimination.
+  contents:
+  - demand
+  - demand_curve_values
+  - aggregate_demand
+  - cost
+  - cost_values
+  - market_structure
+  - compare_structures
+  - price_discrimination
+  - two_part_tariff
+
+- title: Diagrams
+  desc: Textbook figures in the house style, and the layers to build your own.
+  contents:
+  - plot_consumer_choice
+  - plot_producer_choice
+  - plot_price_change
+  - plot_cost_curves
+  - plot_market
+  - plot_two_part_tariff
+  - geom_micro
+  - geom_demand
+  - geom_consumption_path
+
+- title: internal
+  contents:
+  - fredscape-package

@@ -255,7 +255,7 @@ hicks <- function(u, b, new_px = NULL, new_py = NULL) {
 
 #' @export
 print.price_change <- function(x, ...) {
-  fmt <- function(v) format(signif(v, 4), trim = TRUE)
+  fmt <- fmt_num
   cat(sprintf("<Price change: p%s %s -> %s, %s compensation>\n",
               x$good, fmt(x$old_price), fmt(x$new_price),
               if (x$method == "hicks") "Hicksian" else "Slutsky"))
@@ -373,8 +373,5 @@ plot_price_change <- function(u, b, new_px = NULL, new_py = NULL,
               note = "A original, B compensated, C final; dashed line is the compensated budget") +
     ggplot2::labs(x = goods[1], y = goods[2]) +
     theme_econ(panel = panel, grid = "both") +
-    ggplot2::theme(
-      axis.line.y = ggplot2::element_line(colour = econ_surface(panel)$axis, linewidth = 0.5),
-      axis.title = ggplot2::element_text(hjust = 1)
-    )
+    econ_axes(panel)
 }

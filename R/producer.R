@@ -162,6 +162,8 @@ plot_cost_curves <- function(f, w, r, q, fixed = 0,
     labs_econ(title = title, subtitle = subtitle, source = source) +
     ggplot2::labs(x = "Output", y = "Cost per unit") +
     theme_econ(panel = panel, legend_position = "none") +
+    # Deliberately not econ_axes(): the y labels sit on the right here, so a
+    # left-hand axis line would frame nothing.
     ggplot2::theme(axis.title = ggplot2::element_text(hjust = 1))
 }
 

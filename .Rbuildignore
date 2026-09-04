@@ -9,3 +9,6 @@
 ^\.scratch$
 ^\.adversarial-review$
 ^adversarial-review-log$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

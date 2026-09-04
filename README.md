@@ -323,6 +323,11 @@ The figures above are rendered by `data-raw/readme_figures.R` from ggplot2's
 bundled `economics` data set — itself an extract of five FRED series — so the
 README can be rebuilt with no key and no network.
 
+Each feature PR was put through an adversarial review before merging
+(generalist and security reviewers, then a meta-critic curating the
+findings). The run records live in `adversarial-review-log/` on purpose — they
+are the review trail, and several of the fixes in `NEWS.md` cite them by ID.
+
 ## Sources and attribution
 
 Series data comes from the Federal Reserve Bank of St Louis. FRED is a
